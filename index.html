@@ -1603,16 +1603,14 @@
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbyUcwXb2uuACiHJB9W7KhVZVmmvhXa1FciMVi3RSErdLkrusmS84b_TvUX1vttRX3J_iA/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbxeSbNg464zCWBR0gdqg5dHVW89q7ji3SrAsU2Hn66CE_kY02FSJV5x5Fj2FNRieIc-sw/exec';
 
         // nexo API Helper
         const nexoAPI = {
             async request(action, data = null) {
                 try {
-                    const url = new URL(NEXO_API_URL);
-                    url.searchParams.append('action', action);
-
                     let response;
+                    let responseText;
 
                     if (data) {
                         // สำหรับการส่งข้อมูล ใช้ POST
@@ -1625,6 +1623,8 @@
                         });
                     } else {
                         // สำหรับการดึงข้อมูล ใช้ GET
+                        const url = new URL(NEXO_API_URL);
+                        url.searchParams.append('action', action);
                         response = await fetch(url.toString(), {
                             method: 'GET',
                             mode: 'cors',
@@ -1632,11 +1632,23 @@
                         });
                     }
 
-                    const result = await response.json();
+                    responseText = await response.text();
+
+                    // ลอง parse JSON
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error('Response is not JSON:', responseText.substring(0, 200));
+                        throw new Error(`Invalid response from server: ${responseText.substring(0, 100)}`);
+                    }
+
                     if (result.success) {
                         return result.data;
                     } else {
-                        throw new Error(result.error || 'nexo API error');
+                        const errorMsg = result.error || 'nexo API error';
+                        console.error('API Error:', errorMsg, result);
+                        throw new Error(errorMsg);
                     }
                 } catch (error) {
                     console.error('nexo API Error:', error);
@@ -1721,7 +1733,21 @@
         const PRDS = [{ k: '1d', l: '1 วัน' }, { k: '7d', l: '7 วัน' }, { k: '1m', l: '1 เดือน' }, { k: '3m', l: '3 เดือน' }, { k: '6m', l: '6 เดือน' }, { k: '9m', l: '9 เดือน' }, { k: '1y', l: '1 ปี' }];
 
         /* ════ SMALL COMPONENTS ════ */
-        function Toast({ msg, done }) { useEffect(() => { const t = setTimeout(done, 2300); return () => clearTimeout(t); }, []); return <div className="tst"><i className="fa-solid fa-circle-check" style={{ color: 'var(--inc)', marginRight: 7 }}></i>{msg}</div>; }
+        function Toast({ msg, done, type = 'success' }) {
+            useEffect(() => {
+                const t = setTimeout(done, 3000);
+                return () => clearTimeout(t);
+            }, []);
+
+            const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+            const color = type === 'error' ? 'var(--exp)' : 'var(--inc)';
+
+            return <div className="tst">
+                <i className={`fa-solid ${icon}`} style={{ color, marginRight: 7 }}></i>
+                {msg}
+            </div>;
+        }
+
         function Confirm({ msg, onOk, onNo }) { return <div className="cfw" onClick={onNo}><div className="cfb" onClick={e => e.stopPropagation()}><div style={{ fontSize: 36, marginBottom: 10 }}>🗑️</div><div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>ยืนยันการลบ?</div><div style={{ fontSize: 12, color: 'var(--tx2)', marginBottom: 22 }}>{msg || 'ไม่สามารถย้อนกลับได้'}</div><div style={{ display: 'flex', gap: 9 }}><button className="bg" style={{ flex: 1, padding: '10px' }} onClick={onNo}>ยกเลิก</button><button className="bd" style={{ flex: 1, padding: '10px' }} onClick={onOk}>ลบ</button></div></div></div>; }
         function IPicker({ icons, sel, onSel, colors, selC, onSelC }) { return <div><div className="ipg">{icons.map(ic => <button key={ic} className={`ipb${sel === ic ? ' on' : ''}`} onClick={() => onSel(ic)}><i className={`fa-solid ${ic}`}></i></button>)}</div>{colors && <div className="clg">{colors.map(c => <div key={c} className={`cld${selC === c ? ' on' : ''}`} style={{ background: c }} onClick={() => onSelC(c)}></div>)}</div>}</div>; }
 
@@ -1748,7 +1774,7 @@
                     }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: isDark ? '#9098b8' : '#3a4260', font: { size: 11, family: 'Noto Sans Thai' } } } }, scales: { x: { grid: { color: 'rgba(128,128,128,.07)' }, ticks: { color: isDark ? '#454d6a' : '#8592b8', font: { size: 10 } } }, y: { grid: { color: 'rgba(128,128,128,.07)' }, ticks: { color: isDark ? '#454d6a' : '#8592b8', font: { size: 10 }, callback: v => fm(v) } } } }
                 });
                 return () => { if (bi.current) bi.current.destroy(); };
-            }, [ct, mon]);
+            }, [ct, mon, isDark]);
             useEffect(() => {
                 if (ct !== 'pie') return;
                 if (pei.current) pei.current.destroy(); if (pii.current) pii.current.destroy();
@@ -1757,7 +1783,7 @@
                 if (per.current && ee.length > 0) pei.current = new Chart(per.current, { type: 'doughnut', data: { labels: ee.map(([id]) => ec.find(c => c.id === id)?.name || id), datasets: [{ data: ee.map(([, v]) => v), backgroundColor: ee.map(([id]) => ec.find(c => c.id === id)?.color || '#888'), borderWidth: 2, borderColor: bc }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: isDark ? '#454d6a' : '#8592b8', font: { size: 10 }, padding: 8 } } } } });
                 if (pir.current && ie.length > 0) pii.current = new Chart(pir.current, { type: 'doughnut', data: { labels: ie.map(([id]) => ic.find(c => c.id === id)?.name || id), datasets: [{ data: ie.map(([, v]) => v), backgroundColor: ie.map(([id]) => ic.find(c => c.id === id)?.color || '#888'), borderWidth: 2, borderColor: bc }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: isDark ? '#454d6a' : '#8592b8', font: { size: 10 }, padding: 8 } } } } });
                 return () => { if (pei.current) pei.current.destroy(); if (pii.current) pii.current.destroy(); };
-            }, [ct, ebc, ibc]);
+            }, [ct, ebc, ibc, ec, ic, isDark]);
             return <div>
                 <div className="ptabs">{[{ k: 'bar', l: 'แท่ง', i: 'fa-chart-bar' }, { k: 'pie', l: 'วงลม', i: 'fa-chart-pie' }].map(({ k, l, i }) => <button key={k} className={`pt${ct === k ? ' on' : ''}`} onClick={() => setCt(k)}><i className={`fa-solid ${i}`} style={{ marginRight: 5 }}></i>{l}</button>)}</div>
                 {ct === 'bar' && <div className="c3" style={{ padding: '15px', marginBottom: 10 }}><div className="stt" style={{ marginBottom: 11 }}><i className="fa-solid fa-chart-bar"></i>รายรับ vs รายจ่ายรายเดือน</div>{mon.length === 0 ? <div className="emp"><i className="fa-solid fa-chart-bar"></i><p>ยังไม่มีข้อมูล</p></div> : <div className="chwp"><canvas ref={br}></canvas></div>}</div>}
@@ -1917,7 +1943,7 @@
                 let l = [...txs]; if (ft !== 'all') l = l.filter(t => t.type === ft);
                 if (srch.trim()) { const q = srch.toLowerCase(); l = l.filter(t => { const c = gc(t); return (c?.name || '').toLowerCase().includes(q) || (t.note || '').toLowerCase().includes(q); }); }
                 return l.sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`));
-            }, [txs, ft, srch]);
+            }, [txs, ft, srch, ec, ic]);
             const sv = async (tx) => {
                 try {
                     await nexoAPI.saveTransaction(tx);
@@ -1925,7 +1951,7 @@
                     toast('แก้ไขรายการแล้ว');
                     setShowEd(false);
                     setView(null);
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             const dl = async (id) => {
                 try {
@@ -1934,7 +1960,7 @@
                     setConf(null);
                     setView(null);
                     toast('ลบรายการแล้ว');
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             return <div className="pg">
                 <div className="phd"><div className="ptl"><i className="fa-solid fa-clock-rotate-left"></i>ประวัติรายการ</div></div>
@@ -1982,7 +2008,9 @@
                     if (editW) setWallets(p => p.map(x => x.id === w.id ? w : x));
                     else setWallets(p => [...p, w]);
                     toast(editW ? 'แก้ไขกระเป๋าแล้ว' : 'สร้างกระเป๋าใหม่แล้ว');
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                    setShowM(false);
+                    setEditW(null);
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             const dl = async (id) => {
                 try {
@@ -1990,7 +2018,7 @@
                     setWallets(p => p.filter(w => w.id !== id));
                     setConf(null);
                     toast('ลบกระเป๋าแล้ว');
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             return <div className="pg">
                 <div className="phd"><div className="ptl"><i className="fa-solid fa-wallet"></i>กระเป๋าเงิน</div><button className="bp" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditW(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่มกระเป๋า</button></div>
@@ -2018,7 +2046,9 @@
                     if (editC) setCats(p => p.map(x => x.id === c.id ? c : x));
                     else setCats(p => [...p, c]);
                     toast(editC ? 'แก้ไขหมวดหมู่แล้ว' : 'สร้างหมวดหมู่ใหม่แล้ว');
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                    setShowM(false);
+                    setEditC(null);
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             const dl = async (id) => {
                 try {
@@ -2027,7 +2057,7 @@
                     setCats(p => p.filter(c => c.id !== id));
                     setConf(null);
                     toast('ลบหมวดหมู่แล้ว');
-                } catch (e) { toast('เกิดข้อผิดพลาด'); }
+                } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
             return <div className="pg">
                 <div className="phd"><div className="ptl"><i className="fa-solid fa-tags"></i>หมวดหมู่</div><button className="bp" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditC(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่ม</button></div>
@@ -2040,7 +2070,7 @@
                             <div className="sact"><button className="bs" onClick={() => { setEditC(c); setShowM(true); }}><i className="fa-solid fa-pen"></i></button><button className="bs bsd" onClick={() => setConf(c.id)}><i className="fa-solid fa-trash"></i></button></div>
                         </div>)}
                 </div>
-                {showM && <CM onClose={() => { setShowM(false); setEditC(null); }} onSave={sv} editCat={editC} type={tab} />}
+                {showM && <CM onClose={() => { setShowM(false); setEditC(null); }} onSave={sv} editC={editC} type={tab} />}
                 {conf && <Confirm onOk={() => dl(conf)} onNo={() => setConf(null)} />}
             </div>;
         }
@@ -2105,8 +2135,14 @@
             const [showTxM, setShowTxM] = useState(false);
             const [editTx, setEditTx] = useState(null);
             const [toast, setToast] = useState(null);
+            const [toastType, setToastType] = useState('success');
             const [loading, setLoading] = useState(true);
             const [initDone, setInitDone] = useState(false);
+
+            const showT = (msg, isError = false) => {
+                setToast(msg);
+                setToastType(isError ? 'error' : 'success');
+            };
 
             // nexo: โหลดข้อมูลทั้งหมดจาก Google Sheets
             useEffect(() => {
@@ -2142,6 +2178,7 @@
                         setEc(DE);
                         setIc(DI);
                         setInitDone(true);
+                        showT('ไม่สามารถโหลดข้อมูลจากเซิร์ฟเวอร์ได้ ใช้ข้อมูลเริ่มต้น', true);
                     } finally {
                         setLoading(false);
                     }
@@ -2165,16 +2202,21 @@
                 saveSettings({ isDark, acc });
             }, [isDark, acc, initDone]);
 
-            const showT = msg => setToast(msg);
-
             const saveTx = async (tx) => {
                 try {
                     await nexoAPI.saveTransaction(tx);
-                    if (editTx) setTxs(p => p.map(t => t.id === tx.id ? tx : t));
-                    else setTxs(p => [tx, ...p]);
+                    if (editTx) {
+                        setTxs(p => p.map(t => t.id === tx.id ? tx : t));
+                    } else {
+                        setTxs(p => [tx, ...p]);
+                    }
                     showT(editTx ? 'แก้ไขรายการแล้ว' : tx.type === 'income' ? 'เพิ่มรายรับแล้ว' : 'เพิ่มรายจ่ายแล้ว');
                     setEditTx(null);
-                } catch (e) { showT('เกิดข้อผิดพลาด'); }
+                    setShowTxM(false);
+                } catch (e) {
+                    console.error('Save transaction error:', e);
+                    showT('เกิดข้อผิดพลาด: ' + e.message, true);
+                }
             };
 
             const openEd = tx => { setEditTx(tx); setShowTxM(true); };
@@ -2241,7 +2283,7 @@
                 </nav>
 
                 {showTxM && <TxM onClose={() => { setShowTxM(false); setEditTx(null); }} onSave={saveTx} wallets={wallets} ec={ec} ic={ic} editTx={editTx} />}
-                {toast && <Toast msg={toast} done={() => setToast(null)} />}
+                {toast && <Toast msg={toast} done={() => setToast(null)} type={toastType} />}
             </div>;
         }
 
