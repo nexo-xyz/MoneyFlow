@@ -1603,22 +1603,34 @@
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbzGSTC-WUX8VG9uuxokK4RRoPj-tP8YHHJcrEtDBiq7z4wModFgAdWeEmZyXCSaBl_T2w/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbyUcwXb2uuACiHJB9W7KhVZVmmvhXa1FciMVi3RSErdLkrusmS84b_TvUX1vttRX3J_iA/exec';
 
         // nexo API Helper
         const nexoAPI = {
             async request(action, data = null) {
                 try {
-                    const payload = { action };
-                    if (data) payload.data = data;
+                    const url = new URL(NEXO_API_URL);
+                    url.searchParams.append('action', action);
 
-                    const response = await fetch(NEXO_API_URL, {
-                        method: 'POST',
-                        mode: 'cors',
-                        cache: 'no-cache',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+                    let response;
+
+                    if (data) {
+                        // สำหรับการส่งข้อมูล ใช้ POST
+                        response = await fetch(NEXO_API_URL, {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action, data })
+                        });
+                    } else {
+                        // สำหรับการดึงข้อมูล ใช้ GET
+                        response = await fetch(url.toString(), {
+                            method: 'GET',
+                            mode: 'cors',
+                            cache: 'no-cache'
+                        });
+                    }
 
                     const result = await response.json();
                     if (result.success) {
@@ -1631,6 +1643,9 @@
                     throw error;
                 }
             },
+
+            // ดึงข้อมูลทั้งหมดในครั้งเดียว (ลดจำนวน API calls)
+            getAllData: () => nexoAPI.request('getAllData'),
 
             // Transactions
             getTransactions: () => nexoAPI.request('getTransactions'),
