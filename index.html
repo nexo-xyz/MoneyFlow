@@ -1603,7 +1603,7 @@
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbwoUV0k5OI4jEnBSPeMwXoz_MMv5PnYqdMeK64WsZ9uWdp8t_vXetEJIRrYxUHW-12B/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbxk3uYA6nm9J80AKNADi-919UigJUx0a0Mpyza0jS51lzkJeXCDvMwnvlRY9NjRpFSK/exec';
 
         // nexo API Helper
         const nexoAPI = {
@@ -1613,14 +1613,19 @@
                     let responseText;
 
                     if (data) {
-                        // สำหรับการส่งข้อมูล ใช้ POST
+                        // สำหรับการส่งข้อมูล ใช้ POST แบบ no-cors ไม่ได้อ่าน response
+                        // ต้องใช้ application/x-www-form-urlencoded เพื่อหลีกเลี่ยง preflight
+                        const body = new URLSearchParams();
+                        body.append('payload', JSON.stringify({ action, data }));
                         response = await fetch(NEXO_API_URL, {
                             method: 'POST',
-                            mode: 'cors',
+                            mode: 'no-cors',
                             cache: 'no-cache',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ action, data })
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: body.toString()
                         });
+                        // no-cors ไม่สามารถอ่าน response ได้ ถือว่าสำเร็จ
+                        return data;
                     } else {
                         // สำหรับการดึงข้อมูล ใช้ GET
                         const url = new URL(NEXO_API_URL);
