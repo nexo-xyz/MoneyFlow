@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-nexo-protected="true">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoneyFlow Nexus | คู่มือการติดตั้งและคุณสมบัติ</title>
+    <meta name="nexo-version" content="2.0.0">
+    <meta name="nexo-protection" content="watermark-enabled">
+    <title>MoneyFlow Nexus | คู่มือการติดตั้งและคุณสมบัติ nexo</title>
 
-    <!-- Fonts & Icons (Same as your App) -->
+    <!-- Fonts & Icons (Same as your App) - nexo enhanced -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -15,9 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- NEXO THEME TOKENS (Mirroring your App exactly) --- */
+        /* --- NEXO THEME TOKENS (Mirroring your App exactly) - nexo-protected --- */
         :root,
-        [data-theme="dark"] {
+        [data-theme="dark"],
+        [data-nexo-theme="dark"] {
             --bg0: #09090c;
             --bg1: #111116;
             --bg2: #18181f;
@@ -42,6 +45,7 @@
             --er: 255, 77, 109;
             --gld: #ffb833;
             --gr: 255, 184, 51;
+            --nexo-watermark: "nexo";
         }
 
         * {
@@ -59,14 +63,15 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
+        .nexo-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* --- NEXO 3D COMPONENTS (Copied from App) --- */
-        .c3 {
+        /* --- NEXO 3D COMPONENTS (Copied from App) - nexo-enhanced --- */
+        .c3,
+        .nexo-card-3d {
             background: var(--bg2);
             border: 1px solid var(--bd0);
             border-radius: 24px;
@@ -77,7 +82,8 @@
             padding: 28px;
         }
 
-        .c3::before {
+        .c3::before,
+        .nexo-card-3d::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -87,12 +93,14 @@
             z-index: 0;
         }
 
-        .c3:hover {
+        .c3:hover,
+        .nexo-card-3d:hover {
             transform: translateY(-4px);
             box-shadow: 0 1px 0 var(--hi) inset, 0 -1px 0 var(--lo) inset, 0 18px 44px var(--sh);
         }
 
-        .bp {
+        .bp,
+        .nexo-btn-primary {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -110,13 +118,15 @@
             text-decoration: none;
         }
 
-        .bp:hover {
+        .bp:hover,
+        .nexo-btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 26px rgba(var(--ar), .58);
             color: #fff;
         }
 
-        .bg {
+        .bg,
+        .nexo-btn-ghost {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -133,13 +143,14 @@
             box-shadow: 0 1px 0 var(--hi) inset, 0 -1px 0 var(--lo) inset, 0 4px 12px var(--sh);
         }
 
-        .bg:hover {
+        .bg:hover,
+        .nexo-btn-ghost:hover {
             border-color: var(--bd2);
             color: var(--tx0);
         }
 
-        /* --- HEADER --- */
-        header {
+        /* --- HEADER - nexo-styled --- */
+        .nexo-header {
             padding: 20px 0;
             border-bottom: 1px solid var(--bd0);
             margin-bottom: 40px;
@@ -150,19 +161,20 @@
             background: var(--bg1);
         }
 
-        .nav {
+        .nexo-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
+        .nexo-logo {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .orb {
+        .orb,
+        .nexo-orb {
             width: 44px;
             height: 44px;
             border-radius: 13px;
@@ -175,24 +187,26 @@
             box-shadow: 0 4px 14px rgba(var(--ar), .48), 0 1px 0 rgba(255, 255, 255, .28) inset;
         }
 
-        .lt {
+        .lt,
+        .nexo-logo-title {
             font-size: 20px;
             font-weight: 800;
             letter-spacing: -.5px;
         }
 
-        .ls {
+        .ls,
+        .nexo-logo-sub {
             font-size: 11px;
             color: var(--tx2);
             letter-spacing: .1em;
         }
 
-        /* --- SECTIONS --- */
-        section {
+        /* --- SECTIONS - nexo-enhanced --- */
+        .nexo-section {
             padding: 60px 0;
         }
 
-        h2 {
+        .nexo-heading-2 {
             font-size: 32px;
             font-weight: 800;
             margin-bottom: 16px;
@@ -202,30 +216,30 @@
             gap: 12px;
         }
 
-        h2 i {
+        .nexo-heading-2 i {
             color: var(--acc);
             font-size: 28px;
         }
 
-        h3 {
+        .nexo-heading-3 {
             font-size: 22px;
             margin-bottom: 20px;
             color: var(--tx0);
         }
 
-        .grid-2 {
+        .nexo-grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
         }
 
-        .grid-3 {
+        .nexo-grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .feature-card {
+        .nexo-feature-card {
             background: var(--bg2);
             border: 1px solid var(--bd0);
             border-radius: 18px;
@@ -234,12 +248,12 @@
             transition: all .2s;
         }
 
-        .feature-card:hover {
+        .nexo-feature-card:hover {
             border-color: var(--bd1);
             transform: translateY(-3px);
         }
 
-        .ficon {
+        .nexo-feature-icon {
             width: 48px;
             height: 48px;
             border-radius: 14px;
@@ -253,7 +267,7 @@
             box-shadow: 0 3px 10px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .step {
+        .nexo-step {
             display: flex;
             gap: 20px;
             margin-bottom: 30px;
@@ -263,7 +277,7 @@
             border: 1px solid var(--bd0);
         }
 
-        .step-num {
+        .nexo-step-num {
             width: 40px;
             height: 40px;
             border-radius: 13px;
@@ -278,7 +292,7 @@
             box-shadow: 0 4px 12px rgba(var(--ar), .4);
         }
 
-        .code-block {
+        .nexo-code-block {
             background: #0d0d12;
             border: 1px solid var(--bd1);
             border-radius: 14px;
@@ -291,7 +305,7 @@
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, .5);
         }
 
-        .badge {
+        .nexo-badge {
             background: var(--acc);
             color: #fff;
             border-radius: 30px;
@@ -304,18 +318,18 @@
 
         @media (max-width: 768px) {
 
-            .grid-2,
-            .grid-3 {
+            .nexo-grid-2,
+            .nexo-grid-3 {
                 grid-template-columns: 1fr;
             }
 
-            h2 {
+            .nexo-heading-2 {
                 font-size: 26px;
             }
         }
 
-        /* Footer */
-        footer {
+        /* Footer - nexo-styled */
+        .nexo-footer {
             border-top: 1px solid var(--bd0);
             padding: 40px 0;
             margin-top: 60px;
@@ -323,40 +337,57 @@
             color: var(--tx2);
         }
 
-        .hero-highlight {
+        .nexo-hero-highlight {
             color: var(--gld);
+        }
+
+        /* nexo watermark protection */
+        .nexo-protected::after {
+            content: "nexo";
+            position: absolute;
+            bottom: 2px;
+            right: 8px;
+            font-size: 8px;
+            opacity: 0.1;
+            color: var(--tx2);
+            pointer-events: none;
+        }
+
+        .nexo-watermark {
+            position: relative;
         }
     </style>
 </head>
 
-<body data-theme="dark">
+<body data-theme="dark" data-nexo-theme="dark" data-nexo-protected="true">
 
-    <!-- HEADER -->
-    <header>
-        <div class="container nav">
-            <div class="logo">
-                <div class="orb"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+    <!-- NEXO HEADER -->
+    <header class="nexo-header nexo-protected">
+        <div class="nexo-container nexo-nav">
+            <div class="nexo-logo">
+                <div class="orb nexo-orb"><i class="fa-solid fa-cloud-arrow-up"></i></div>
                 <div>
-                    <div class="lt">MoneyFlow Nexus</div>
-                    <div class="ls">คู่มือการติดตั้งด้วยตนเอง</div>
+                    <div class="lt nexo-logo-title">MoneyFlow Nexus</div>
+                    <div class="ls nexo-logo-sub">คู่มือการติดตั้งด้วยตนเอง nexo</div>
                 </div>
             </div>
             <div>
-                <a href="#guide" class="bg"><i class="fa-solid fa-book-open"></i> เริ่มต้นติดตั้ง</a>
-                <a href="#" class="bp" style="margin-left: 12px;"><i class="fa-brands fa-github"></i> Download
-                    Source</a>
+                <a href="#nexo-guide" class="bg nexo-btn-ghost"><i class="fa-solid fa-book-open"></i>
+                    เริ่มต้นติดตั้ง</a>
+                <a href="#" class="bp nexo-btn-primary" style="margin-left: 12px;"><i class="fa-brands fa-github"></i>
+                    Download Source</a>
             </div>
         </div>
     </header>
 
-    <main class="container">
+    <main class="nexo-container">
 
-        <!-- 1. HERO / แนะนำ -->
-        <section style="padding-top: 20px;">
-            <div class="c3" style="background: linear-gradient(145deg, #12121a, #0c0c12);">
+        <!-- 1. HERO / แนะนำ - nexo enhanced -->
+        <section class="nexo-section" style="padding-top: 20px;" data-nexo-section="hero">
+            <div class="c3 nexo-card-3d" style="background: linear-gradient(145deg, #12121a, #0c0c12);">
                 <div style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
                     <div style="flex: 2;">
-                        <span class="badge"><i class="fa-regular fa-gem"></i> Nexo Platform</span>
+                        <span class="nexo-badge"><i class="fa-regular fa-gem"></i> Nexo Platform</span>
                         <h1
                             style="font-size: 48px; font-weight: 800; margin: 20px 0 16px; letter-spacing: -1.5px; line-height: 1.2;">
                             บันทึกรายรับรายจ่าย <br>ระดับ <span style="color: var(--acc);">Professional</span>
@@ -367,8 +398,10 @@
                             พร้อมคู่มือการติดตั้งแบบ Step-by-Step สำหรับนักพัฒนา
                         </p>
                         <div style="display: flex; gap: 16px;">
-                            <a href="#guide" class="bp"><i class="fa-solid fa-gear"></i> ดูวิธีการติดตั้ง</a>
-                            <a href="#features" class="bg"><i class="fa-solid fa-star"></i> จุดเด่นของระบบ</a>
+                            <a href="#nexo-guide" class="bp nexo-btn-primary"><i class="fa-solid fa-gear"></i>
+                                ดูวิธีการติดตั้ง</a>
+                            <a href="#nexo-features" class="bg nexo-btn-ghost"><i class="fa-solid fa-star"></i>
+                                จุดเด่นของระบบ</a>
                         </div>
                     </div>
                     <div style="flex: 1; text-align: center;">
@@ -376,7 +409,7 @@
                             style="background: rgba(var(--ar), .15); border-radius: 30px; padding: 20px; border: 1px solid var(--bd1);">
                             <i class="fa-solid fa-chart-pie"
                                 style="font-size: 80px; color: var(--acc); margin-bottom: 10px;"></i>
-                            <div class="jb" style="font-size: 24px; font-weight: 700;">MoneyFlow</div>
+                            <div class="jb nexo-mono" style="font-size: 24px; font-weight: 700;">MoneyFlow</div>
                             <div style="color: var(--inc); margin-top: 10px;"><i class="fa-solid fa-cloud"></i> Google
                                 Sheets Ready</div>
                         </div>
@@ -385,55 +418,56 @@
             </div>
         </section>
 
-        <!-- 2. ข้อดีทั้งหมดของระบบ -->
-        <section id="features">
-            <h2><i class="fa-solid fa-crown"></i> ข้อดีทั้งหมดของระบบ</h2>
-            <div class="grid-3">
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-cloud"></i></div>
-                    <h3>Serverless & ฟรีตลอดชีพ</h3>
+        <!-- 2. ข้อดีทั้งหมดของระบบ - nexo enhanced -->
+        <section id="nexo-features" class="nexo-section" data-nexo-section="features">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-crown"></i> ข้อดีทั้งหมดของระบบ</h2>
+            <div class="nexo-grid-3">
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-cloud"></i></div>
+                    <h3 class="nexo-heading-3">Serverless & ฟรีตลอดชีพ</h3>
                     <p style="color: var(--tx1);">ไม่ต้องเสียค่าเช่าโฮสต์รายเดือน ใช้ Google Sheets เป็นฐานข้อมูลและ
                         Google Apps Script เป็น Backend ข้อมูลอยู่กับคุณตลอดไป</p>
                 </div>
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-palette"></i></div>
-                    <h3>UI/UX ระดับ Nexo</h3>
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-palette"></i></div>
+                    <h3 class="nexo-heading-3">UI/UX ระดับ Nexo</h3>
                     <p style="color: var(--tx1);">ออกแบบด้วยหลัก Glassmorphism + 3D Neo-Shadow รองรับ Dark/Light Mode
                         และระบบ Accent Color ที่ปรับแต่งได้ตามใจ</p>
                 </div>
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-chart-line"></i></div>
-                    <h3>รายงาน & วิเคราะห์เชิงลึก</h3>
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3 class="nexo-heading-3">รายงาน & วิเคราะห์เชิงลึก</h3>
                     <p style="color: var(--tx1);">กราฟรายเดือน, วงลมหมวดหมู่ (Pie Chart) ด้วย Chart.js,
                         ตัวกรองตามกระเป๋าเงินและช่วงเวลาแบบเรียลไทม์</p>
                 </div>
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-shield"></i></div>
-                    <h3>ความเป็นส่วนตัวสูงสุด</h3>
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-shield"></i></div>
+                    <h3 class="nexo-heading-3">ความเป็นส่วนตัวสูงสุด</h3>
                     <p style="color: var(--tx1);">ข้อมูลทั้งหมดถูกเก็บใน Google Sheet ส่วนตัวของคุณเอง
                         ไม่มีบุคคลที่สามเข้าถึง ปลอดภัยด้วยระบบของ Google</p>
                 </div>
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <h3>Responsive & PWA Ready</h3>
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <h3 class="nexo-heading-3">Responsive & PWA Ready</h3>
                     <p style="color: var(--tx1);">ใช้งานได้ทั้งบนมือถือและ Desktop มี Bottom Navigation และ Sidebar
                         เหมาะสำหรับการใช้งานในชีวิตประจำวัน</p>
                 </div>
-                <div class="feature-card">
-                    <div class="ficon"><i class="fa-solid fa-code"></i></div>
-                    <h3>Clean Code & ปรับแต่งง่าย</h3>
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3 class="nexo-heading-3">Clean Code & ปรับแต่งง่าย</h3>
                     <p style="color: var(--tx1);">เขียนด้วย React 18 แบบไม่ต้อง Build (ใช้ Babel ในเบราว์เซอร์) แก้ไข
                         Theme Tokens ได้ที่ไฟล์เดียว</p>
                 </div>
             </div>
         </section>
 
-        <!-- 3. ทำไมถึงต้องใช้งานระบบของเรา -->
-        <section>
-            <div class="c3">
+        <!-- 3. ทำไมถึงต้องใช้งานระบบของเรา - nexo enhanced -->
+        <section class="nexo-section" data-nexo-section="why-us">
+            <div class="c3 nexo-card-3d nexo-protected">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
                     <div>
-                        <h2 style="margin-top: 0;"><i class="fa-solid fa-question"></i> ทำไมต้อง MoneyFlow?</h2>
+                        <h2 class="nexo-heading-2" style="margin-top: 0;"><i class="fa-solid fa-question"></i> ทำไมต้อง
+                            MoneyFlow?</h2>
                         <ul style="list-style: none;">
                             <li style="margin-bottom: 20px; display: flex; gap: 12px;">
                                 <span style="color: var(--inc); font-size: 20px;"><i
@@ -462,7 +496,7 @@
                     </div>
                     <div
                         style="background: var(--bg3); border-radius: 24px; padding: 20px; border: 1px solid var(--bd1);">
-                        <div class="jb" style="color: var(--acc2); margin-bottom: 10px;">// nexo token</div>
+                        <div class="jb nexo-mono" style="color: var(--acc2); margin-bottom: 10px;">// nexo token</div>
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.8;">
                             <span style="color: #7aa2f7;">const</span> <span style="color: #c0caf5;">nexo</span> = {<br>
                             &nbsp;&nbsp;backend: <span style="color: #9ece6a;">'Google Sheets'</span>,<br>
@@ -475,24 +509,26 @@
             </div>
         </section>
 
-        <!-- 4. คู่มือวิธีการเชื่อมต่อ (ละเอียด) -->
-        <section id="guide">
-            <h2><i class="fa-solid fa-book"></i> คู่มือการติดตั้งด้วยตนเอง (สำหรับเจ้าของโค้ด)</h2>
+        <!-- 4. คู่มือวิธีการเชื่อมต่อ (ละเอียด) - nexo enhanced -->
+        <section id="nexo-guide" class="nexo-section" data-nexo-section="guide">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-book"></i> คู่มือการติดตั้งด้วยตนเอง (สำหรับเจ้าของโค้ด)
+            </h2>
             <p style="margin-bottom: 30px; color: var(--tx1);">คู่มือนี้จะพาคุณติดตั้งระบบทั้งหมดภายใน 10-15 นาที
                 โดยใช้ทรัพยากรฟรีจาก Google และ GitHub</p>
 
-            <!-- STEP 1: GOOGLE SHEETS -->
-            <div class="step">
-                <div class="step-num">1</div>
+            <!-- STEP 1: GOOGLE SHEETS - nexo enhanced -->
+            <div class="nexo-step" data-nexo-step="1">
+                <div class="nexo-step-num">1</div>
                 <div style="flex: 1;">
-                    <h3 style="margin-bottom: 8px;">📁 สร้าง Google Sheets และ Apps Script</h3>
+                    <h3 class="nexo-heading-3" style="margin-bottom: 8px;">📁 สร้าง Google Sheets และ Apps Script</h3>
                     <p>1. ไปที่ <a href="https://sheets.new" target="_blank" style="color: var(--acc);">sheets.new</a>
                         สร้างชีตใหม่<br>
                         2. เปลี่ยนชื่อ Sheet เป็น <code>Transactions</code>, <code>Wallets</code>,
                         <code>ExpenseCats</code>, <code>IncomeCats</code>, <code>Settings</code> (ตามชื่อ Tab
                         ด้านล่าง)<br>
-                        3. ไปที่ <strong>ส่วนขยาย (Extensions) > Apps Script</strong></p>
-                    <div class="code-block">
+                        3. ไปที่ <strong>ส่วนขยาย (Extensions) > Apps Script</strong>
+                    </p>
+                    <div class="nexo-code-block">
                         // วางโค้ดนี้ลงใน Apps Script Editor<br>
                         function doGet(e) { return handleRequest(e); }<br>
                         function doPost(e) { return handleRequest(e); }<br>
@@ -501,17 +537,17 @@
                     <p>4. กด <strong>บันทึก</strong> > <strong>ทำให้ใช้งานได้ (Deploy)</strong> > <strong>New
                             Deployment</strong> > เลือก <strong>Web App</strong><br>
                         5. ตั้งค่า <code>Execute as: Me</code>, <code>Who has access: Anyone</code> (สำคัญ!) > กด Deploy
-                        และ <strong class="hero-highlight">คัดลอก URL ที่ได้</strong></p>
+                        และ <strong class="nexo-hero-highlight">คัดลอก URL ที่ได้</strong></p>
                 </div>
             </div>
 
-            <!-- STEP 2: CONNECT TO CODE -->
-            <div class="step">
-                <div class="step-num">2</div>
+            <!-- STEP 2: CONNECT TO CODE - nexo enhanced -->
+            <div class="nexo-step" data-nexo-step="2">
+                <div class="nexo-step-num">2</div>
                 <div style="flex: 1;">
-                    <h3 style="margin-bottom: 8px;">🔗 เชื่อมต่อ URL ในโค้ด HTML</h3>
+                    <h3 class="nexo-heading-3" style="margin-bottom: 8px;">🔗 เชื่อมต่อ URL ในโค้ด HTML</h3>
                     <p>เปิดไฟล์ <code>index.html</code> (ไฟล์หลักของระบบ) และค้นหาบรรทัด:</p>
-                    <div class="code-block">
+                    <div class="nexo-code-block">
                         const NEXO_API_URL = 'YOUR_SCRIPT_URL_HERE';
                     </div>
                     <p>นำ URL ที่คัดลอกมาจากขั้นตอนที่ 1 มาใส่แทนที่ <code>YOUR_SCRIPT_URL_HERE</code>
@@ -522,32 +558,33 @@
                 </div>
             </div>
 
-            <!-- STEP 3: GITHUB PAGES -->
-            <div class="step">
-                <div class="step-num">3</div>
+            <!-- STEP 3: GITHUB PAGES - nexo enhanced -->
+            <div class="nexo-step" data-nexo-step="3">
+                <div class="nexo-step-num">3</div>
                 <div style="flex: 1;">
-                    <h3 style="margin-bottom: 8px;">🌍 อัปโหลดขึ้น GitHub Pages</h3>
+                    <h3 class="nexo-heading-3" style="margin-bottom: 8px;">🌍 อัปโหลดขึ้น GitHub Pages</h3>
                     <p>1. สร้าง Repository ใหม่บน GitHub (ชื่อเช่น <code>moneyflow-app</code>)<br>
                         2. อัปโหลดไฟล์ <code>index.html</code> ของคุณขึ้นไปที่ Repository<br>
                         3. ไปที่ <strong>Settings > Pages</strong><br>
                         4. ใต้ "Branch" เลือก <code>main</code> หรือ <code>master</code> แล้วกด Save<br>
                         5. รอประมาณ 1-2 นาที ระบบจะสร้างลิงก์สำหรับเข้าใช้งาน เช่น
-                        <code>https://username.github.io/moneyflow-app</code></p>
-                    <a href="#" class="bg" style="margin-top: 15px;"><i class="fa-brands fa-github"></i>
+                        <code>https://username.github.io/moneyflow-app</code>
+                    </p>
+                    <a href="#" class="bg nexo-btn-ghost" style="margin-top: 15px;"><i class="fa-brands fa-github"></i>
                         ดูตัวอย่างโค้ดบน GitHub</a>
                 </div>
             </div>
 
-            <!-- STEP 4: INITIAL DATA -->
-            <div class="step">
-                <div class="step-num">4</div>
+            <!-- STEP 4: INITIAL DATA - nexo enhanced -->
+            <div class="nexo-step" data-nexo-step="4">
+                <div class="nexo-step-num">4</div>
                 <div style="flex: 1;">
-                    <h3 style="margin-bottom: 8px;">📊 ตั้งค่าข้อมูลเริ่มต้น (Initial Setup)</h3>
+                    <h3 class="nexo-heading-3" style="margin-bottom: 8px;">📊 ตั้งค่าข้อมูลเริ่มต้น (Initial Setup)</h3>
                     <p>เมื่อเข้าใช้งานครั้งแรก ระบบจะพยายามดึงข้อมูลจาก Sheets ถ้า Sheet ว่างเปล่า
                         ระบบจะใช้ข้อมูลตัวอย่าง (Default Wallets/Categories)<br>
                         แนะนำให้เปิด Apps Script และรันฟังก์ชัน <code>initSheets()</code> เพื่อสร้าง Header
                         และข้อมูลตัวอย่างโดยอัตโนมัติ</p>
-                    <div class="code-block">
+                    <div class="nexo-code-block">
                         // เพิ่มใน Apps Script แล้วกด Run หนึ่งครั้ง<br>
                         function initSheets() {<br>
                         &nbsp;&nbsp;// สร้าง Header และ Default Data<br>
@@ -557,16 +594,16 @@
             </div>
         </section>
 
-        <!-- 5. UI/UX PREVIEW -->
-        <section>
-            <h2><i class="fa-solid fa-mobile-screen-button"></i> UI/UX สไตล์ Nexo</h2>
-            <div class="grid-2">
-                <div class="c3" style="padding: 0; overflow: hidden;">
-                    <img src="https://placehold.co/600x400/18181f/6c63ff?text=MoneyFlow+Dashboard+Preview"
-                        alt="Dashboard Preview" style="width: 100%; height: auto; display: block;">
+        <!-- 5. UI/UX PREVIEW - nexo enhanced -->
+        <section class="nexo-section" data-nexo-section="preview">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-mobile-screen-button"></i> UI/UX สไตล์ Nexo</h2>
+            <div class="nexo-grid-2">
+                <div class="c3 nexo-card-3d" style="padding: 0; overflow: hidden;">
+                    <img src="https://placehold.co/600x400/18181f/6c63ff?text=MoneyFlow+Nexo+Dashboard+Preview"
+                        alt="Nexo Dashboard Preview" style="width: 100%; height: auto; display: block;">
                 </div>
-                <div class="c3">
-                    <h3>ดีไซน์ที่เน้นความเรียบหรู</h3>
+                <div class="c3 nexo-card-3d nexo-protected">
+                    <h3 class="nexo-heading-3">ดีไซน์ที่เน้นความเรียบหรู</h3>
                     <ul style="color: var(--tx1); padding-left: 20px;">
                         <li style="margin-bottom: 12px;"><i class="fa-solid fa-circle-check"
                                 style="color: var(--inc); margin-right: 8px;"></i>ระบบการ์ดแบบ 3D Shadow</li>
@@ -583,31 +620,35 @@
             </div>
         </section>
 
-        <!-- CTA -->
-        <section style="text-align: center;">
-            <div class="c3" style="background: radial-gradient(circle at top left, #1a1a2e, #0f0f15);">
-                <h2 style="justify-content: center;">พร้อมที่จะควบคุมการเงินของคุณแล้วหรือยัง?</h2>
+        <!-- CTA - nexo enhanced -->
+        <section class="nexo-section" style="text-align: center;" data-nexo-section="cta">
+            <div class="c3 nexo-card-3d" style="background: radial-gradient(circle at top left, #1a1a2e, #0f0f15);">
+                <h2 class="nexo-heading-2" style="justify-content: center;">พร้อมที่จะควบคุมการเงินของคุณแล้วหรือยัง?
+                </h2>
                 <p style="margin-bottom: 30px; font-size: 18px; color: var(--tx1);">เริ่มต้นติดตั้งระบบภายใน 5 นาที
                     ไม่มีค่าใช้จ่ายแอบแฝง</p>
-                <a href="#" class="bp" style="font-size: 18px; padding: 16px 40px;"><i class="fa-solid fa-download"></i>
+                <a href="#" class="bp nexo-btn-primary" style="font-size: 18px; padding: 16px 40px;"><i
+                        class="fa-solid fa-download"></i>
                     ดาวน์โหลด Source Code</a>
                 <p style="margin-top: 20px; font-size: 14px; color: var(--tx2);">หรือดูวิดีโอสอนการติดตั้งแบบละเอียด</p>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="orb" style="margin: 0 auto 20px; width: 36px; height: 36px; font-size: 16px;"><i
+    <footer class="nexo-footer nexo-protected">
+        <div class="nexo-container">
+            <div class="orb nexo-orb" style="margin: 0 auto 20px; width: 36px; height: 36px; font-size: 16px;"><i
                     class="fa-solid fa-code"></i></div>
             <p>MoneyFlow Nexo Edition — พัฒนาด้วย React & Google Apps
                 Script<br>คู่มือนี้สร้างขึ้นสำหรับผู้ที่มีโค้ดของระบบและต้องการเปิดใช้งานด้วยตนเอง</p>
-            <p style="margin-top: 20px; font-size: 13px;">&copy; 2026 MoneyFlow. ออกแบบตามมาตรฐาน Nexo Theme.</p>
+            <p style="margin-top: 20px; font-size: 13px;">&copy; 2026 MoneyFlow. ออกแบบตามมาตรฐาน Nexo Theme.
+                สงวนลิขสิทธิ์</p>
         </div>
     </footer>
 
-    <!-- Smooth Scroll Script -->
+    <!-- Smooth Scroll Script - nexo enhanced -->
     <script>
+        // nexo smooth scroll handler
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -615,6 +656,9 @@
                 if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
         });
+
+        // nexo protection watermark
+        console.log('%c🚀 MoneyFlow Nexus | Protected by nexo', 'color: #6c63ff; font-size: 14px; font-weight: bold;');
     </script>
 </body>
 
