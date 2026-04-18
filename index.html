@@ -1603,73 +1603,57 @@
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbyE4eA3ViyTu3DufeR42xFBkrwRD3lGyiS9w9xAc7kPMc3AFBVNko74v3MI6RgqWb3J/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbz6a06SDkzOxhUDqEBdSxSbSSoQTsqSCfSD7mK3Lm4cC0VQN1WmcvUZfweYZZc2LTn5/exec';
 
         // nexo API Helper
         const nexoAPI = {
             async request(action, data = null) {
                 try {
-                    // ใช้ GET ทั้งหมดเพื่อหลีกเลี่ยง CORS preflight
-                    // Google Apps Script รองรับ GET แบบ no-cors ได้ปกติ
-                    const url = new URL(NEXO_API_URL);
-                    url.searchParams.append('action', action);
+                    let response;
+                    let responseText;
+
                     if (data) {
-                        url.searchParams.append('payload', JSON.stringify(data));
+                        // สำหรับการส่งข้อมูล ใช้ POST
+                        response = await fetch(NEXO_API_URL, {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action, data })
+                        });
+                    } else {
+                        // สำหรับการดึงข้อมูล ใช้ GET
+                        const url = new URL(NEXO_API_URL);
+                        url.searchParams.append('action', action);
+                        response = await fetch(url.toString(), {
+                            method: 'GET',
+                            mode: 'cors',
+                            cache: 'no-cache'
+                        });
                     }
 
-                    const response = await fetch(url.toString(), {
-                        method: 'GET',
-                        mode: 'no-cors',
-                        cache: 'no-cache',
-                        redirect: 'follow',
-                    });
+                    responseText = await response.text();
 
-                    // no-cors จะทำให้ response เป็น opaque ต้องใช้ jsonp แทน
-                    // ดังนั้นเปลี่ยนเป็น regular cors mode แต่ไม่ส่ง preflight headers
-                    throw new Error('USE_JSONP');
-                } catch (e) {
-                    if (e.message !== 'USE_JSONP') throw e;
+                    // ลอง parse JSON
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error('Response is not JSON:', responseText.substring(0, 200));
+                        throw new Error(`Invalid response from server: ${responseText.substring(0, 100)}`);
+                    }
+
+                    if (result.success) {
+                        return result.data;
+                    } else {
+                        const errorMsg = result.error || 'nexo API error';
+                        console.error('API Error:', errorMsg, result);
+                        throw new Error(errorMsg);
+                    }
+                } catch (error) {
+                    console.error('nexo API Error:', error);
+                    throw error;
                 }
-
-                // JSONP approach - เลี่ยง CORS ได้ 100%
-                return new Promise((resolve, reject) => {
-                    const cbName = 'nexo_cb_' + Math.random().toString(36).slice(2);
-                    const url = new URL(NEXO_API_URL);
-                    url.searchParams.append('action', action);
-                    url.searchParams.append('callback', cbName);
-                    if (data) {
-                        url.searchParams.append('payload', JSON.stringify(data));
-                    }
-
-                    const script = document.createElement('script');
-                    const timeout = setTimeout(() => {
-                        cleanup();
-                        reject(new Error('Request timeout'));
-                    }, 30000);
-
-                    function cleanup() {
-                        clearTimeout(timeout);
-                        delete window[cbName];
-                        if (script.parentNode) script.parentNode.removeChild(script);
-                    }
-
-                    window[cbName] = (result) => {
-                        cleanup();
-                        if (result && result.success) {
-                            resolve(result.data);
-                        } else {
-                            reject(new Error((result && result.error) || 'nexo API error'));
-                        }
-                    };
-
-                    script.onerror = () => {
-                        cleanup();
-                        reject(new Error('Script load error'));
-                    };
-
-                    script.src = url.toString();
-                    document.head.appendChild(script);
-                });
             },
 
             // ดึงข้อมูลทั้งหมดในครั้งเดียว (ลดจำนวน API calls)
@@ -1704,7 +1688,31 @@
         const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36);
         const thNow = () => { const n = new Date(); const t = new Date(n.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })); return { date: `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`, time: `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}` }; };
         const TM = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-        const fd = d => { if (!d) return ''; const [y, m, dd] = d.split('-'); return `${+dd} ${TM[+m - 1]} ${+y + 543}`; };
+        const fd = d => {
+            if (!d) return '';
+            try {
+                let s = String(d).trim();
+                if (s.includes('T')) s = s.split('T')[0];
+                if (s.startsWith('1899') || s.startsWith('1900')) return '';
+                const parts = s.split('-');
+                if (parts.length < 3) return d;
+                const y = parseInt(parts[0], 10);
+                const m = parseInt(parts[1], 10);
+                const dd = parseInt(parts[2], 10);
+                if (isNaN(y) || isNaN(m) || isNaN(dd) || m < 1 || m > 12) return d;
+                return dd + ' ' + TM[m - 1] + ' ' + (y + 543);
+            } catch (e) { return String(d); }
+        };
+        const ft = t => {
+            if (!t) return '';
+            try {
+                let s = String(t).trim();
+                // ถ้าเป็น ISO string เช่น 1899-12-30T10:14:56.000Z
+                if (s.includes('T')) { s = s.split('T')[1] || ''; }
+                // ตัดเอาแค่ HH:MM
+                return s.substring(0, 5);
+            } catch (e) { return ''; }
+        };
         const fm = n => { if (n == null) return '0'; const a = Math.abs(n); if (a >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'; if (a >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'; return Number(n).toLocaleString('th-TH', { maximumFractionDigits: 2 }); };
         const ff = n => Number(n || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         const fpd = (txs, p, wid) => {
@@ -1718,7 +1726,7 @@
                 '6m': () => c.setMonth(c.getMonth() - 6), '9m': () => c.setMonth(c.getMonth() - 9),
                 '1y': () => c.setFullYear(c.getFullYear() - 1),
             }[p] || (() => { }))();
-            return list.filter(t => new Date(t.date + 'T' + (t.time || '00:00')) >= c);
+            return list.filter(t => { const ds = String(t.date || '').split('T')[0]; const ts = ft(t.time) || '00:00'; try { return new Date(ds + 'T' + ts) >= c; } catch (e) { return false; } });
         };
 
         /* ════ DEFAULTS ════ */
@@ -1888,7 +1896,7 @@
             const totBal = wallets.reduce((s, w) => { const i = txs.filter(t => t.walletId === w.id && t.type === 'income').reduce((a, t) => a + +t.amount, 0); const e = txs.filter(t => t.walletId === w.id && t.type === 'expense').reduce((a, t) => a + +t.amount, 0); return s + i - e; }, 0);
             const gc = tx => (tx.type === 'income' ? ic : ec).find(c => c.id === tx.catId);
             const gw = id => wallets.find(w => w.id === id);
-            const rec = [...filt].sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`)).slice(0, 30);
+            const rec = [...filt].sort((a, b) => { const da = (String(a.date || '').split('T')[0]) + ' ' + (ft(a.time) || '00:00'); const db = (String(b.date || '').split('T')[0]) + ' ' + (ft(b.time) || '00:00'); return db.localeCompare(da); }).slice(0, 30);
             return <div className="pg">
                 <div className="hero">
                     <div className="hl"><i className="fa-solid fa-layer-group" style={{ marginRight: 6 }}></i>ยอดคงเหลือรวมทุกกระเป๋า</div>
@@ -1958,7 +1966,7 @@
             const filt = useMemo(() => {
                 let l = [...txs]; if (ft !== 'all') l = l.filter(t => t.type === ft);
                 if (srch.trim()) { const q = srch.toLowerCase(); l = l.filter(t => { const c = gc(t); return (c?.name || '').toLowerCase().includes(q) || (t.note || '').toLowerCase().includes(q); }); }
-                return l.sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`));
+                return l.sort((a, b) => { const da = (String(a.date || '').split('T')[0]) + ' ' + (ft(a.time) || '00:00'); const db = (String(b.date || '').split('T')[0]) + ' ' + (ft(b.time) || '00:00'); return db.localeCompare(da); });
             }, [txs, ft, srch, ec, ic]);
             const sv = async (tx) => {
                 try {
@@ -1989,7 +1997,7 @@
                             const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr" onClick={() => setView(tx)}>
                                 <div className="txic" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
                                 <div className="txin"><div className="txca">{c?.name || 'ไม่ระบุ'}</div><div className="txme">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
-                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)} {tx.time}</div></div>
+                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)} {ft(tx.time)}</div></div>
                             </div>;
                         })}
                 </div>
@@ -2003,7 +2011,7 @@
                                     <div className="jb" style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-1px', color: view.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{view.type === 'income' ? '+' : '-'}฿{ff(view.amount)}</div>
                                 </div>
                                 <div className="c3" style={{ padding: '3px 15px', marginBottom: 15 }}>
-                                    {[{ i: 'fa-calendar', l: 'วันที่', v: fd(view.date) }, { i: 'fa-clock', l: 'เวลา', v: view.time }, { i: 'fa-wallet', l: 'กระเป๋า', v: w?.name }, { i: 'fa-note-sticky', l: 'โน๊ต', v: view.note || '-' }].filter(r => r.v).map(r => <div key={r.l} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 0', borderBottom: '1px solid var(--bd0)' }}><i className={`fa-solid ${r.i}`} style={{ color: 'var(--tx2)', width: 15, textAlign: 'center' }}></i><span style={{ fontSize: 11, color: 'var(--tx2)', minWidth: 42 }}>{r.l}</span><span style={{ fontSize: 13, fontWeight: 600 }}>{r.v}</span></div>)}
+                                    {[{ i: 'fa-calendar', l: 'วันที่', v: fd(view.date) }, { i: 'fa-clock', l: 'เวลา', v: ft(view.time) }, { i: 'fa-wallet', l: 'กระเป๋า', v: w?.name }, { i: 'fa-note-sticky', l: 'โน๊ต', v: view.note || '-' }].filter(r => r.v).map(r => <div key={r.l} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 0', borderBottom: '1px solid var(--bd0)' }}><i className={`fa-solid ${r.i}`} style={{ color: 'var(--tx2)', width: 15, textAlign: 'center' }}></i><span style={{ fontSize: 11, color: 'var(--tx2)', minWidth: 42 }}>{r.l}</span><span style={{ fontSize: 13, fontWeight: 600 }}>{r.v}</span></div>)}
                                 </div>
                                 <div style={{ display: 'flex', gap: 8 }}><button className="bg" style={{ flex: 1 }} onClick={() => setShowEd(true)}><i className="fa-solid fa-pen"></i>แก้ไข</button><button className="bd" style={{ flex: 1 }} onClick={() => setConf(view.id)}><i className="fa-solid fa-trash"></i>ลบ</button><button className="bg" style={{ flex: 1 }} onClick={() => setView(null)}>ปิด</button></div>
                             </div></div>
