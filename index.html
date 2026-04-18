@@ -5,8 +5,8 @@
     <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <!-- nexo: Google Sheets Integration -->
-    <title>MoneyFlow 3D | nexo</title>
+    <!-- nexo: Google Sheets Integration - Protected by nexo watermark -->
+    <title>MoneyFlow | บันทึกรายรับรายจ่าย nexo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -18,9 +18,10 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* nexo theme tokens - ระบบป้องกันการก๊อปปี้ */
+        /* nexo theme tokens - ระบบป้องกันการก๊อปปี้ nexo-protected */
         :root,
-        [data-theme="dark"] {
+        [data-theme="dark"],
+        [data-nexo-theme="dark"] {
             --bg0: #09090c;
             --bg1: #111116;
             --bg2: #18181f;
@@ -36,9 +37,11 @@
             --lo: rgba(0, 0, 0, .7);
             --gb: rgba(255, 255, 255, .035);
             --gbd: rgba(255, 255, 255, .07);
+            --nexo-watermark: "nexo";
         }
 
-        [data-theme="light"] {
+        [data-theme="light"],
+        [data-nexo-theme="light"] {
             --bg0: #dde0ea;
             --bg1: #e8ebf4;
             --bg2: #f2f4fb;
@@ -78,7 +81,8 @@
 
         html,
         body,
-        #root {
+        #root,
+        #nexo-root {
             height: 100%;
             overflow: hidden;
         }
@@ -92,7 +96,8 @@
             transition: background .3s, color .3s;
         }
 
-        .jb {
+        .jb,
+        .nexo-mono {
             font-family: 'JetBrains Mono', monospace;
         }
 
@@ -111,7 +116,8 @@
         }
 
         /* 3D CARD - nexo style */
-        .c3 {
+        .c3,
+        .nexo-card-3d {
             background: var(--bg2);
             border: 1px solid var(--bd0);
             border-radius: 18px;
@@ -124,7 +130,8 @@
             transition: transform .2s, box-shadow .2s;
         }
 
-        .c3::before {
+        .c3::before,
+        .nexo-card-3d::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -134,7 +141,8 @@
             z-index: 0;
         }
 
-        .c3:hover {
+        .c3:hover,
+        .nexo-card-3d:hover {
             transform: translateY(-2px);
             box-shadow: 0 1px 0 var(--hi) inset, 0 -1px 0 var(--lo) inset, 1px 0 var(--hi) inset, -1px 0 var(--lo) inset,
                 0 16px 44px var(--sh), 0 4px 14px rgba(var(--ar), .12);
@@ -143,7 +151,10 @@
         /* BUTTONS */
         .bp,
         .bg,
-        .bd {
+        .bd,
+        .nexo-btn-primary,
+        .nexo-btn-ghost,
+        .nexo-btn-danger {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -163,7 +174,10 @@
 
         .bp::before,
         .bg::before,
-        .bd::before {
+        .bd::before,
+        .nexo-btn-primary::before,
+        .nexo-btn-ghost::before,
+        .nexo-btn-danger::before {
             content: '';
             position: absolute;
             top: 0;
@@ -174,23 +188,27 @@
             pointer-events: none;
         }
 
-        .bp {
+        .bp,
+        .nexo-btn-primary {
             background: linear-gradient(145deg, var(--acc), var(--acc2));
             color: #fff;
             padding: 12px 18px;
             box-shadow: 0 1px 0 rgba(255, 255, 255, .22) inset, 0 4px 16px rgba(var(--ar), .42), 0 1px 4px rgba(0, 0, 0, .35);
         }
 
-        .bp:hover {
+        .bp:hover,
+        .nexo-btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 1px 0 rgba(255, 255, 255, .22) inset, 0 8px 26px rgba(var(--ar), .58);
         }
 
-        .bp:active {
+        .bp:active,
+        .nexo-btn-primary:active {
             transform: translateY(1px) scale(.97);
         }
 
-        .bg {
+        .bg,
+        .nexo-btn-ghost {
             background: var(--bg2);
             color: var(--tx1);
             padding: 11px 18px;
@@ -198,12 +216,14 @@
             box-shadow: 0 1px 0 var(--hi) inset, 0 -1px 0 var(--lo) inset, 0 4px 12px var(--sh);
         }
 
-        .bg:hover {
+        .bg:hover,
+        .nexo-btn-ghost:hover {
             border-color: var(--bd2);
             color: var(--tx0);
         }
 
-        .bd {
+        .bd,
+        .nexo-btn-danger {
             background: rgba(var(--er), .1);
             color: var(--exp);
             padding: 11px 18px;
@@ -211,11 +231,13 @@
             box-shadow: 0 4px 12px rgba(var(--er), .12);
         }
 
-        .bd:hover {
+        .bd:hover,
+        .nexo-btn-danger:hover {
             background: rgba(var(--er), .18);
         }
 
-        .bs {
+        .bs,
+        .nexo-btn-small {
             width: 34px;
             height: 34px;
             border-radius: 10px;
@@ -231,18 +253,21 @@
             box-shadow: 0 2px 8px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .bs:hover {
+        .bs:hover,
+        .nexo-btn-small:hover {
             color: var(--tx0);
             border-color: var(--bd2);
         }
 
-        .bsd:hover {
+        .bsd:hover,
+        .nexo-btn-small-danger:hover {
             color: var(--exp);
             border-color: rgba(var(--er), .4);
         }
 
         /* LAYOUT */
-        #app {
+        #app,
+        #nexo-app {
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -257,37 +282,45 @@
                 overflow: auto;
             }
 
-            #app {
+            #app,
+            #nexo-app {
                 flex-direction: row;
                 height: 100vh;
             }
 
-            #sb {
+            #sb,
+            #nexo-sidebar {
                 display: flex !important;
             }
 
-            #bn {
+            #bn,
+            #nexo-bottom-nav {
                 display: none !important;
             }
 
-            #mw {
+            #mw,
+            #nexo-main-wrapper {
                 flex: 1;
                 height: 100vh;
                 overflow-y: auto;
                 padding-bottom: 40px;
             }
 
-            .mhdr {
+            .mhdr,
+            .nexo-mobile-header {
                 display: none !important;
             }
         }
 
         @media(max-width:768px) {
-            #sb {
+
+            #sb,
+            #nexo-sidebar {
                 display: none !important;
             }
 
-            #mw {
+            #mw,
+            #nexo-main-wrapper {
                 flex: 1;
                 overflow-y: auto;
                 padding-bottom: 76px;
@@ -295,7 +328,8 @@
         }
 
         /* SIDEBAR */
-        #sb {
+        #sb,
+        #nexo-sidebar {
             width: 240px;
             min-width: 240px;
             flex-direction: column;
@@ -309,7 +343,8 @@
             overflow: hidden;
         }
 
-        .sl {
+        .sl,
+        .nexo-sidebar-logo {
             padding: 22px 20px 18px;
             display: flex;
             align-items: center;
@@ -318,7 +353,8 @@
             margin-bottom: 10px;
         }
 
-        .orb {
+        .orb,
+        .nexo-orb {
             width: 40px;
             height: 40px;
             border-radius: 13px;
@@ -333,7 +369,8 @@
             position: relative;
         }
 
-        .orb::before {
+        .orb::before,
+        .nexo-orb::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -342,13 +379,15 @@
             pointer-events: none;
         }
 
-        .lt {
+        .lt,
+        .nexo-logo-title {
             font-size: 16px;
             font-weight: 800;
             letter-spacing: -.3px;
         }
 
-        .ls {
+        .ls,
+        .nexo-logo-sub {
             font-size: 10px;
             color: var(--tx2);
             letter-spacing: .08em;
@@ -356,7 +395,8 @@
             font-weight: 500;
         }
 
-        .sadd {
+        .sadd,
+        .nexo-sidebar-add {
             margin: 4px 12px 10px;
             background: linear-gradient(145deg, var(--acc), var(--acc2));
             color: #fff;
@@ -377,7 +417,8 @@
             box-shadow: 0 4px 16px rgba(var(--ar), .38), 0 1px 0 rgba(255, 255, 255, .22) inset;
         }
 
-        .sadd::before {
+        .sadd::before,
+        .nexo-sidebar-add::before {
             content: '';
             position: absolute;
             top: 0;
@@ -388,16 +429,19 @@
             pointer-events: none;
         }
 
-        .sadd:hover {
+        .sadd:hover,
+        .nexo-sidebar-add:hover {
             transform: translateY(-1px);
             box-shadow: 0 8px 22px rgba(var(--ar), .52);
         }
 
-        .sadd:active {
+        .sadd:active,
+        .nexo-sidebar-add:active {
             transform: translateY(1px);
         }
 
-        .ssec {
+        .ssec,
+        .nexo-sidebar-section {
             font-size: 10px;
             font-weight: 700;
             letter-spacing: .1em;
@@ -406,7 +450,8 @@
             padding: 10px 20px 5px;
         }
 
-        .si {
+        .si,
+        .nexo-sidebar-item {
             display: flex;
             align-items: center;
             gap: 11px;
@@ -425,18 +470,21 @@
             text-align: left;
         }
 
-        .si i {
+        .si i,
+        .nexo-sidebar-item i {
             width: 20px;
             text-align: center;
             font-size: 15px;
         }
 
-        .si:hover {
+        .si:hover,
+        .nexo-sidebar-item:hover {
             background: var(--bg2);
             color: var(--tx0);
         }
 
-        .si.on {
+        .si.on,
+        .nexo-sidebar-item.active {
             background: linear-gradient(145deg, rgba(var(--ar), .18), rgba(var(--ar), .07));
             color: var(--acc);
             font-weight: 700;
@@ -445,7 +493,8 @@
         }
 
         /* MOBILE HEADER */
-        .mhdr {
+        .mhdr,
+        .nexo-mobile-header {
             height: 56px;
             display: flex;
             align-items: center;
@@ -459,7 +508,8 @@
             flex-shrink: 0;
         }
 
-        .mhl {
+        .mhl,
+        .nexo-mobile-header-left {
             display: flex;
             align-items: center;
             gap: 9px;
@@ -467,14 +517,16 @@
             font-weight: 800;
         }
 
-        .mhr {
+        .mhr,
+        .nexo-mobile-header-right {
             display: flex;
             align-items: center;
             gap: 7px;
         }
 
         /* BOTTOM NAV */
-        #bn {
+        #bn,
+        #nexo-bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -488,7 +540,8 @@
             box-shadow: 0 -6px 28px var(--sh);
         }
 
-        .bni {
+        .bni,
+        .nexo-bottom-nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -506,16 +559,19 @@
             padding: 6px 4px;
         }
 
-        .bni i {
+        .bni i,
+        .nexo-bottom-nav-item i {
             font-size: 18px;
             margin-bottom: 1px;
         }
 
-        .bni.on {
+        .bni.on,
+        .nexo-bottom-nav-item.active {
             color: var(--acc);
         }
 
-        .fabw {
+        .fabw,
+        .nexo-fab-wrapper {
             position: relative;
             flex: 1;
             display: flex;
@@ -524,7 +580,8 @@
             justify-content: center;
         }
 
-        .fabo {
+        .fabo,
+        .nexo-fab {
             width: 48px;
             height: 48px;
             border-radius: 15px;
@@ -541,7 +598,8 @@
             overflow: hidden;
         }
 
-        .fabo::before {
+        .fabo::before,
+        .nexo-fab::before {
             content: '';
             position: absolute;
             top: 0;
@@ -552,12 +610,14 @@
             pointer-events: none;
         }
 
-        .fabw:active .fabo {
+        .fabw:active .fabo,
+        .nexo-fab-wrapper:active .nexo-fab {
             transform: scale(.88);
         }
 
         /* PAGE */
-        .pg {
+        .pg,
+        .nexo-page {
             padding: clamp(13px, 3.5vw, 22px);
             animation: pgin .28s cubic-bezier(.16, 1, .3, 1);
         }
@@ -574,26 +634,30 @@
             }
         }
 
-        .phd {
+        .phd,
+        .nexo-page-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
         }
 
-        .ptl {
+        .ptl,
+        .nexo-page-title {
             font-size: clamp(17px, 4vw, 21px);
             font-weight: 800;
             letter-spacing: -.4px;
         }
 
-        .ptl i {
+        .ptl i,
+        .nexo-page-title i {
             margin-right: 8px;
             color: var(--acc);
         }
 
         /* HERO */
-        .hero {
+        .hero,
+        .nexo-hero {
             border-radius: 22px;
             padding: clamp(17px, 4vw, 26px);
             margin-bottom: 12px;
@@ -604,7 +668,8 @@
                 0 14px 44px rgba(var(--ar), .42), 0 4px 12px rgba(0, 0, 0, .28);
         }
 
-        .hero::before {
+        .hero::before,
+        .nexo-hero::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -616,7 +681,8 @@
             pointer-events: none;
         }
 
-        .hero::after {
+        .hero::after,
+        .nexo-hero::after {
             content: '';
             position: absolute;
             bottom: -60%;
@@ -628,7 +694,8 @@
             pointer-events: none;
         }
 
-        .hl {
+        .hl,
+        .nexo-hero-label {
             font-size: 11px;
             font-weight: 700;
             letter-spacing: .1em;
@@ -637,7 +704,8 @@
             margin-bottom: 5px;
         }
 
-        .ha {
+        .ha,
+        .nexo-hero-amount {
             font-family: 'JetBrains Mono', monospace;
             font-size: clamp(26px, 7vw, 38px);
             font-weight: 700;
@@ -649,14 +717,16 @@
             text-shadow: 0 2px 12px rgba(0, 0, 0, .28);
         }
 
-        .hs {
+        .hs,
+        .nexo-hero-sub {
             font-size: 11px;
             color: rgba(255, 255, 255, .5);
             position: relative;
             z-index: 1;
         }
 
-        .hchips {
+        .hchips,
+        .nexo-hero-chips {
             display: flex;
             gap: 8px;
             margin-top: 14px;
@@ -664,7 +734,8 @@
             z-index: 1;
         }
 
-        .hch {
+        .hch,
+        .nexo-hero-chip {
             background: rgba(255, 255, 255, .11);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, .18);
@@ -674,7 +745,8 @@
             box-shadow: 0 1px 0 rgba(255, 255, 255, .14) inset;
         }
 
-        .hcl {
+        .hcl,
+        .nexo-hero-chip-label {
             font-size: 10px;
             font-weight: 700;
             letter-spacing: .06em;
@@ -683,7 +755,8 @@
             margin-bottom: 3px;
         }
 
-        .hcv {
+        .hcv,
+        .nexo-hero-chip-value {
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             font-weight: 700;
@@ -692,14 +765,16 @@
         }
 
         /* SUMMARY CARDS */
-        .sg {
+        .sg,
+        .nexo-summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 10px;
         }
 
-        .sc {
+        .sc,
+        .nexo-summary-card {
             border-radius: 16px;
             padding: 13px 15px;
             border: 1px solid;
@@ -707,7 +782,8 @@
             overflow: hidden;
         }
 
-        .sc::before {
+        .sc::before,
+        .nexo-summary-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -718,17 +794,20 @@
             pointer-events: none;
         }
 
-        .sci {
+        .sci,
+        .nexo-summary-card-income {
             background: rgba(var(--ir), .1);
             border-color: rgba(var(--ir), .25);
         }
 
-        .sce {
+        .sce,
+        .nexo-summary-card-expense {
             background: rgba(var(--er), .1);
             border-color: rgba(var(--er), .25);
         }
 
-        .scb {
+        .scb,
+        .nexo-summary-card-balance {
             background: rgba(var(--ar), .1);
             border-color: rgba(var(--ar), .25);
             border-radius: 16px;
@@ -737,7 +816,8 @@
             overflow: hidden;
         }
 
-        .scb::before {
+        .scb::before,
+        .nexo-summary-card-balance::before {
             content: '';
             position: absolute;
             top: 0;
@@ -748,7 +828,8 @@
             pointer-events: none;
         }
 
-        .slb {
+        .slb,
+        .nexo-summary-label {
             font-size: 10px;
             font-weight: 700;
             letter-spacing: .07em;
@@ -757,11 +838,13 @@
             margin-bottom: 5px;
         }
 
-        .slb i {
+        .slb i,
+        .nexo-summary-label i {
             margin-right: 4px;
         }
 
-        .sv {
+        .sv,
+        .nexo-summary-value {
             font-family: 'JetBrains Mono', monospace;
             font-size: clamp(15px, 4vw, 19px);
             font-weight: 700;
@@ -769,7 +852,8 @@
         }
 
         /* PERIOD TABS */
-        .ptabs {
+        .ptabs,
+        .nexo-period-tabs {
             display: flex;
             gap: 6px;
             overflow-x: auto;
@@ -778,11 +862,13 @@
             scrollbar-width: none;
         }
 
-        .ptabs::-webkit-scrollbar {
+        .ptabs::-webkit-scrollbar,
+        .nexo-period-tabs::-webkit-scrollbar {
             display: none;
         }
 
-        .pt {
+        .pt,
+        .nexo-period-tab {
             padding: 5px 13px;
             border-radius: 20px;
             font-size: 11.5px;
@@ -797,12 +883,14 @@
             box-shadow: 0 2px 6px var(--sh);
         }
 
-        .pt:hover {
+        .pt:hover,
+        .nexo-period-tab:hover {
             border-color: var(--bd2);
             color: var(--tx1);
         }
 
-        .pt.on {
+        .pt.on,
+        .nexo-period-tab.active {
             background: linear-gradient(145deg, var(--acc), var(--acc2));
             border-color: var(--acc);
             color: #fff;
@@ -810,7 +898,8 @@
         }
 
         /* TX ITEM */
-        .txr {
+        .txr,
+        .nexo-transaction-row {
             display: flex;
             align-items: center;
             gap: 11px;
@@ -820,15 +909,18 @@
             transition: padding .15s;
         }
 
-        .txr:last-child {
+        .txr:last-child,
+        .nexo-transaction-row:last-child {
             border-bottom: none;
         }
 
-        .txr:hover {
+        .txr:hover,
+        .nexo-transaction-row:hover {
             padding-left: 4px;
         }
 
-        .txic {
+        .txic,
+        .nexo-transaction-icon {
             width: 41px;
             height: 41px;
             border-radius: 13px;
@@ -841,7 +933,8 @@
             box-shadow: 0 3px 10px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .txic::before {
+        .txic::before,
+        .nexo-transaction-icon::before {
             content: '';
             position: absolute;
             top: 0;
@@ -853,12 +946,14 @@
             pointer-events: none;
         }
 
-        .txin {
+        .txin,
+        .nexo-transaction-info {
             flex: 1;
             min-width: 0;
         }
 
-        .txca {
+        .txca,
+        .nexo-transaction-category {
             font-size: 13px;
             font-weight: 700;
             white-space: nowrap;
@@ -866,7 +961,8 @@
             text-overflow: ellipsis;
         }
 
-        .txme {
+        .txme,
+        .nexo-transaction-meta {
             font-size: 11px;
             color: var(--tx2);
             white-space: nowrap;
@@ -874,26 +970,30 @@
             text-overflow: ellipsis;
         }
 
-        .txrt {
+        .txrt,
+        .nexo-transaction-right {
             text-align: right;
             flex-shrink: 0;
         }
 
-        .txam {
+        .txam,
+        .nexo-transaction-amount {
             font-family: 'JetBrains Mono', monospace;
             font-size: 13.5px;
             font-weight: 700;
             letter-spacing: -.4px;
         }
 
-        .txdt {
+        .txdt,
+        .nexo-transaction-date {
             font-size: 10px;
             color: var(--tx2);
             margin-top: 1px;
         }
 
         /* WALLET TABS */
-        .wtabs {
+        .wtabs,
+        .nexo-wallet-tabs {
             display: flex;
             gap: 6px;
             overflow-x: auto;
@@ -902,11 +1002,13 @@
             scrollbar-width: none;
         }
 
-        .wtabs::-webkit-scrollbar {
+        .wtabs::-webkit-scrollbar,
+        .nexo-wallet-tabs::-webkit-scrollbar {
             display: none;
         }
 
-        .wt {
+        .wt,
+        .nexo-wallet-tab {
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 11px;
@@ -923,14 +1025,16 @@
             gap: 5px;
         }
 
-        .wt.on {
+        .wt.on,
+        .nexo-wallet-tab.active {
             background: rgba(var(--gr), .1);
             border-color: rgba(var(--gr), .4);
             color: var(--gld);
         }
 
         /* WALLET ROW */
-        .wr {
+        .wr,
+        .nexo-wallet-row {
             display: flex;
             align-items: center;
             gap: 13px;
@@ -943,11 +1047,13 @@
             transition: all .16s;
         }
 
-        .wr:hover {
+        .wr:hover,
+        .nexo-wallet-row:hover {
             border-color: var(--bd1);
         }
 
-        .wic {
+        .wic,
+        .nexo-wallet-icon {
             width: 44px;
             height: 44px;
             border-radius: 14px;
@@ -961,7 +1067,8 @@
             overflow: hidden;
         }
 
-        .wic::before {
+        .wic::before,
+        .nexo-wallet-icon::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -970,7 +1077,8 @@
             pointer-events: none;
         }
 
-        .wb {
+        .wb,
+        .nexo-wallet-balance {
             font-family: 'JetBrains Mono', monospace;
             font-size: 17px;
             font-weight: 700;
@@ -978,13 +1086,15 @@
         }
 
         /* CAT GRID */
-        .cgrd {
+        .cgrd,
+        .nexo-category-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
 
-        .cch {
+        .cch,
+        .nexo-category-chip {
             padding: 11px 7px;
             border-radius: 13px;
             border: 1.5px solid var(--bd0);
@@ -1000,7 +1110,8 @@
             overflow: hidden;
         }
 
-        .cch::before {
+        .cch::before,
+        .nexo-category-chip::before {
             content: '';
             position: absolute;
             top: 0;
@@ -1011,27 +1122,32 @@
             pointer-events: none;
         }
 
-        .cch:hover {
+        .cch:hover,
+        .nexo-category-chip:hover {
             border-color: var(--bd2);
             color: var(--tx0);
         }
 
-        .cch.on {
+        .cch.on,
+        .nexo-category-chip.active {
             font-weight: 700;
         }
 
-        .cci {
+        .cci,
+        .nexo-category-icon {
             font-size: 19px;
             margin-bottom: 4px;
             display: block;
         }
 
         /* FORM */
-        .fg {
+        .fg,
+        .nexo-form-group {
             margin-bottom: 13px;
         }
 
-        .fl {
+        .fl,
+        .nexo-form-label {
             display: block;
             font-size: 10px;
             font-weight: 700;
@@ -1043,7 +1159,10 @@
 
         input,
         textarea,
-        select {
+        select,
+        .nexo-input,
+        .nexo-textarea,
+        .nexo-select {
             width: 100%;
             background: var(--bg2);
             border: 1.5px solid var(--bd0);
@@ -1059,19 +1178,25 @@
 
         input:focus,
         textarea:focus,
-        select:focus {
+        select:focus,
+        .nexo-input:focus,
+        .nexo-textarea:focus,
+        .nexo-select:focus {
             border-color: var(--acc);
             background: var(--bg3);
             box-shadow: 0 0 0 3px rgba(var(--ar), .18), 0 2px 8px var(--sh);
         }
 
         input::placeholder,
-        textarea::placeholder {
+        textarea::placeholder,
+        .nexo-input::placeholder,
+        .nexo-textarea::placeholder {
             color: var(--tx2);
             font-size: 13px;
         }
 
-        select {
+        select,
+        .nexo-select {
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23454d6a' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
@@ -1081,43 +1206,54 @@
             cursor: pointer;
         }
 
-        select option {
+        select option,
+        .nexo-select option {
             background: var(--bg2);
         }
 
-        textarea {
+        textarea,
+        .nexo-textarea {
             resize: vertical;
             min-height: 68px;
             line-height: 1.6;
         }
 
         input[type=date],
-        input[type=time] {
+        input[type=time],
+        .nexo-input-date,
+        .nexo-input-time {
             color-scheme: dark;
             cursor: pointer;
         }
 
         [data-theme="light"] input[type=date],
-        [data-theme="light"] input[type=time] {
+        [data-theme="light"] input[type=time],
+        [data-nexo-theme="light"] .nexo-input-date,
+        [data-nexo-theme="light"] .nexo-input-time {
             color-scheme: light;
         }
 
-        input[type=number] {
+        input[type=number],
+        .nexo-input-number {
             -moz-appearance: textfield;
         }
 
         input[type=number]::-webkit-outer-spin-button,
-        input[type=number]::-webkit-inner-spin-button {
+        input[type=number]::-webkit-inner-spin-button,
+        .nexo-input-number::-webkit-outer-spin-button,
+        .nexo-input-number::-webkit-inner-spin-button {
             -webkit-appearance: none;
         }
 
-        .ttog {
+        .ttog,
+        .nexo-type-toggle {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
 
-        .tb {
+        .tb,
+        .nexo-toggle-btn {
             padding: 11px;
             border-radius: 12px;
             border: 1.5px solid var(--bd1);
@@ -1135,20 +1271,23 @@
             box-shadow: 0 3px 10px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .tb.inc.on {
+        .tb.inc.on,
+        .nexo-toggle-btn.income.active {
             background: rgba(var(--ir), .15);
             border-color: rgba(var(--ir), .45);
             color: var(--inc);
         }
 
-        .tb.exp.on {
+        .tb.exp.on,
+        .nexo-toggle-btn.expense.active {
             background: rgba(var(--er), .15);
             border-color: rgba(var(--er), .45);
             color: var(--exp);
         }
 
         /* MODAL */
-        .ov {
+        .ov,
+        .nexo-overlay {
             position: fixed;
             inset: 0;
             z-index: 200;
@@ -1172,13 +1311,16 @@
         }
 
         @media(min-width:480px) {
-            .ov {
+
+            .ov,
+            .nexo-overlay {
                 align-items: center;
                 padding: 24px;
             }
         }
 
-        .mb {
+        .mb,
+        .nexo-modal {
             background: var(--bg1);
             border: 1px solid var(--bd1);
             border-radius: 26px 26px 0 0;
@@ -1191,7 +1333,9 @@
         }
 
         @media(min-width:480px) {
-            .mb {
+
+            .mb,
+            .nexo-modal {
                 border-radius: 22px;
                 max-height: 88vh;
             }
@@ -1209,7 +1353,8 @@
             }
         }
 
-        .mhd {
+        .mhd,
+        .nexo-modal-header {
             padding: 17px 19px;
             border-bottom: 1px solid var(--bd0);
             display: flex;
@@ -1221,7 +1366,8 @@
             z-index: 1;
         }
 
-        .mttl {
+        .mttl,
+        .nexo-modal-title {
             font-size: 15px;
             font-weight: 800;
             display: flex;
@@ -1229,11 +1375,13 @@
             gap: 8px;
         }
 
-        .mttl i {
+        .mttl i,
+        .nexo-modal-title i {
             color: var(--acc);
         }
 
-        .mcls {
+        .mcls,
+        .nexo-modal-close {
             width: 31px;
             height: 31px;
             border-radius: 9px;
@@ -1249,17 +1397,20 @@
             box-shadow: 0 2px 6px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .mcls:hover {
+        .mcls:hover,
+        .nexo-modal-close:hover {
             color: var(--tx0);
             background: var(--bg3);
         }
 
-        .mbdy {
+        .mbdy,
+        .nexo-modal-body {
             padding: 18px;
         }
 
         /* CONFIRM */
-        .cfw {
+        .cfw,
+        .nexo-confirm-wrapper {
             position: fixed;
             inset: 0;
             z-index: 300;
@@ -1272,7 +1423,8 @@
             animation: ovin .2s;
         }
 
-        .cfb {
+        .cfb,
+        .nexo-confirm-box {
             background: var(--bg1);
             border: 1px solid var(--bd1);
             border-radius: 22px;
@@ -1285,7 +1437,8 @@
         }
 
         /* TOAST */
-        .tst {
+        .tst,
+        .nexo-toast {
             position: fixed;
             bottom: calc(62px + 12px);
             left: 50%;
@@ -1304,7 +1457,9 @@
         }
 
         @media(min-width:769px) {
-            .tst {
+
+            .tst,
+            .nexo-toast {
                 bottom: 22px;
             }
         }
@@ -1322,20 +1477,23 @@
         }
 
         /* CHART */
-        .chwp {
+        .chwp,
+        .nexo-chart-wrapper {
             position: relative;
             height: clamp(170px, 38vw, 230px);
         }
 
         /* ICON PICKER */
-        .ipg {
+        .ipg,
+        .nexo-icon-picker-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 7px;
             margin-bottom: 11px;
         }
 
-        .ipb {
+        .ipb,
+        .nexo-icon-picker-btn {
             width: 39px;
             height: 39px;
             border-radius: 10px;
@@ -1351,24 +1509,28 @@
             box-shadow: 0 2px 7px var(--sh), 0 1px 0 var(--hi) inset;
         }
 
-        .ipb:hover {
+        .ipb:hover,
+        .nexo-icon-picker-btn:hover {
             border-color: var(--bd2);
             color: var(--tx0);
         }
 
-        .ipb.on {
+        .ipb.on,
+        .nexo-icon-picker-btn.active {
             border-color: var(--acc);
             background: rgba(var(--ar), .14);
             color: var(--acc);
         }
 
-        .clg {
+        .clg,
+        .nexo-color-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 7px;
         }
 
-        .cld {
+        .cld,
+        .nexo-color-dot {
             width: 28px;
             height: 28px;
             border-radius: 9px;
@@ -1378,20 +1540,23 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, .28), 0 1px 0 rgba(255, 255, 255, .18) inset;
         }
 
-        .cld.on {
+        .cld.on,
+        .nexo-color-dot.active {
             border-color: #fff;
             box-shadow: 0 0 0 2px var(--acc), 0 2px 8px rgba(0, 0, 0, .28);
         }
 
         /* SEC HDR */
-        .shd {
+        .shd,
+        .nexo-section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 9px;
         }
 
-        .stt {
+        .stt,
+        .nexo-section-title {
             font-size: 10.5px;
             font-weight: 700;
             text-transform: uppercase;
@@ -1399,12 +1564,14 @@
             color: var(--tx2);
         }
 
-        .stt i {
+        .stt i,
+        .nexo-section-title i {
             margin-right: 4px;
         }
 
         /* SETTING ITEM */
-        .seti {
+        .seti,
+        .nexo-setting-item {
             display: flex;
             align-items: center;
             gap: 11px;
@@ -1412,11 +1579,13 @@
             border-bottom: 1px solid var(--bd0);
         }
 
-        .seti:last-child {
+        .seti:last-child,
+        .nexo-setting-item:last-child {
             border-bottom: none;
         }
 
-        .seic {
+        .seic,
+        .nexo-setting-icon {
             width: 36px;
             height: 36px;
             border-radius: 11px;
@@ -1430,7 +1599,8 @@
             overflow: hidden;
         }
 
-        .seic::before {
+        .seic::before,
+        .nexo-setting-icon::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -1439,24 +1609,28 @@
             pointer-events: none;
         }
 
-        .slbl {
+        .slbl,
+        .nexo-setting-label {
             font-weight: 700;
             font-size: 13px;
         }
 
-        .ssub {
+        .ssub,
+        .nexo-setting-sub {
             font-size: 11px;
             color: var(--tx2);
         }
 
-        .sact {
+        .sact,
+        .nexo-setting-actions {
             margin-left: auto;
             display: flex;
             gap: 6px;
         }
 
         /* PROGRESS */
-        .pb {
+        .pb,
+        .nexo-progress-bar {
             height: 4px;
             border-radius: 4px;
             background: var(--bg3);
@@ -1464,14 +1638,16 @@
             margin-top: 4px;
         }
 
-        .pf {
+        .pf,
+        .nexo-progress-fill {
             height: 100%;
             border-radius: 4px;
             transition: width .5s cubic-bezier(.16, 1, .3, 1);
         }
 
         /* THEME PAGE */
-        .trow {
+        .trow,
+        .nexo-theme-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1479,21 +1655,25 @@
             border-bottom: 1px solid var(--bd0);
         }
 
-        .trow:last-child {
+        .trow:last-child,
+        .nexo-theme-row:last-child {
             border-bottom: none;
         }
 
-        .trlbl {
+        .trlbl,
+        .nexo-theme-label {
             font-size: 13px;
             font-weight: 700;
         }
 
-        .trsub {
+        .trsub,
+        .nexo-theme-sub {
             font-size: 11px;
             color: var(--tx2);
         }
 
-        .sw {
+        .sw,
+        .nexo-switch {
             width: 44px;
             height: 24px;
             border-radius: 12px;
@@ -1505,12 +1685,14 @@
             box-shadow: 0 2px 6px var(--sh) inset;
         }
 
-        .sw.on {
+        .sw.on,
+        .nexo-switch.active {
             background: var(--acc);
             border-color: var(--acc);
         }
 
-        .sw::after {
+        .sw::after,
+        .nexo-switch::after {
             content: '';
             position: absolute;
             top: 2px;
@@ -1523,18 +1705,21 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, .28);
         }
 
-        .sw.on::after {
+        .sw.on::after,
+        .nexo-switch.active::after {
             transform: translateX(20px);
         }
 
-        .asw {
+        .asw,
+        .nexo-accent-swatch {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 10px;
         }
 
-        .as {
+        .as,
+        .nexo-accent-swatch-item {
             width: 34px;
             height: 34px;
             border-radius: 10px;
@@ -1544,26 +1729,30 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, .28), 0 1px 0 rgba(255, 255, 255, .18) inset;
         }
 
-        .as.on {
+        .as.on,
+        .nexo-accent-swatch-item.active {
             border-color: #fff;
             transform: scale(1.12);
         }
 
         /* EMPTY */
-        .emp {
+        .emp,
+        .nexo-empty-state {
             text-align: center;
             padding: 38px 20px;
             color: var(--tx2);
         }
 
-        .emp i {
+        .emp i,
+        .nexo-empty-state i {
             font-size: 34px;
             opacity: .22;
             margin-bottom: 9px;
             display: block;
         }
 
-        .emp p {
+        .emp p,
+        .nexo-empty-state p {
             font-size: 12.5px;
         }
 
@@ -1590,22 +1779,35 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* nexo watermark protection */
+        .nexo-protected::after {
+            content: "nexo";
+            position: absolute;
+            bottom: 2px;
+            right: 8px;
+            font-size: 8px;
+            opacity: 0.15;
+            color: var(--tx2);
+            pointer-events: none;
+        }
     </style>
 </head>
 
-<body data-theme="dark">
+<body data-theme="dark" data-nexo-theme="dark">
     <div id="root"></div>
+    <div id="nexo-root" style="display: none;"></div>
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
 
         /* ═══════════════════════════════════════════════════════════
-           nexo Google Sheets API Configuration
+           nexo Google Sheets API Configuration - Protected System
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbxk3uYA6nm9J80AKNADi-919UigJUx0a0Mpyza0jS51lzkJeXCDvMwnvlRY9NjRpFSK/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbyqJFa0AvJAVxnAKkCD6faItCxZ7fvOI9cHnpWgViqAgTGRxJDvz__oZGFBiEUq9PW9/exec';
 
-        // nexo API Helper
+        // nexo API Helper - Protected
         const nexoAPI = {
             async request(action, data = null) {
                 try {
@@ -1689,7 +1891,7 @@
             saveSettings: (settings) => nexoAPI.request('saveSettings', settings),
         };
 
-        /* ════ HELPERS ════ */
+        /* ════ nexo HELPERS ════ */
         const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36);
         const thNow = () => { const n = new Date(); const t = new Date(n.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })); return { date: `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`, time: `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}` }; };
         const TM = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
@@ -1725,7 +1927,7 @@
             return list.filter(t => new Date(t.date + 'T' + (t.time || '00:00')) >= c);
         };
 
-        /* ════ DEFAULTS ════ */
+        /* ════ nexo DEFAULTS ════ */
         const DW = [{ id: 'w1', name: 'กระเป๋าหลัก', icon: 'fa-wallet', color: '#6c63ff' }, { id: 'w2', name: 'บัตรเครดิต', icon: 'fa-credit-card', color: '#8b5cf6' }, { id: 'w3', name: 'ออมทรัพย์', icon: 'fa-piggy-bank', color: '#00d68f' }];
         const DE = [{ id: 'e1', name: 'ค่าน้ำ', icon: 'fa-droplet', color: '#3b82f6' }, { id: 'e2', name: 'ค่าไฟ', icon: 'fa-bolt', color: '#f59e0b' }, { id: 'e3', name: 'ค่าเน็ต', icon: 'fa-wifi', color: '#8b5cf6' }, { id: 'e4', name: 'อาหาร', icon: 'fa-utensils', color: '#ff4d6d' }, { id: 'e5', name: 'เดินทาง', icon: 'fa-car', color: '#06b6d4' }, { id: 'e6', name: 'ช้อปปิ้ง', icon: 'fa-bag-shopping', color: '#ec4899' }, { id: 'e7', name: 'บันเทิง', icon: 'fa-gamepad', color: '#6366f1' }, { id: 'e8', name: 'สุขภาพ', icon: 'fa-heart-pulse', color: '#ef4444' }, { id: 'e9', name: 'อื่นๆ', icon: 'fa-circle-dot', color: '#6b7280' }];
         const DI = [{ id: 'i1', name: 'เงินเดือน', icon: 'fa-money-bill-wave', color: '#00d68f' }, { id: 'i2', name: 'โบนัส', icon: 'fa-gift', color: '#ffb833' }, { id: 'i3', name: 'โอที', icon: 'fa-clock', color: '#3b82f6' }, { id: 'i4', name: 'ลงทุน', icon: 'fa-chart-line', color: '#8b5cf6' }, { id: 'i5', name: 'ฟรีแลนซ์', icon: 'fa-laptop', color: '#06b6d4' }, { id: 'i6', name: 'อื่นๆ', icon: 'fa-plus-circle', color: '#6b7280' }];
@@ -1748,11 +1950,12 @@
             r.style.setProperty('--acc', p.h); r.style.setProperty('--acc2', p.a2);
             r.style.setProperty('--acc3', p.h + 'bb'); r.style.setProperty('--ar', p.r);
             document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
+            document.body.setAttribute('data-nexo-theme', dark ? 'dark' : 'light');
         };
 
         const PRDS = [{ k: '1d', l: '1 วัน' }, { k: '7d', l: '7 วัน' }, { k: '1m', l: '1 เดือน' }, { k: '3m', l: '3 เดือน' }, { k: '6m', l: '6 เดือน' }, { k: '9m', l: '9 เดือน' }, { k: '1y', l: '1 ปี' }];
 
-        /* ════ SMALL COMPONENTS ════ */
+        /* ════ nexo SMALL COMPONENTS ════ */
         function Toast({ msg, done, type = 'success' }) {
             useEffect(() => {
                 const t = setTimeout(done, 3000);
@@ -1762,16 +1965,16 @@
             const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
             const color = type === 'error' ? 'var(--exp)' : 'var(--inc)';
 
-            return <div className="tst">
+            return <div className="tst nexo-toast">
                 <i className={`fa-solid ${icon}`} style={{ color, marginRight: 7 }}></i>
                 {msg}
             </div>;
         }
 
-        function Confirm({ msg, onOk, onNo }) { return <div className="cfw" onClick={onNo}><div className="cfb" onClick={e => e.stopPropagation()}><div style={{ fontSize: 36, marginBottom: 10 }}>🗑️</div><div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>ยืนยันการลบ?</div><div style={{ fontSize: 12, color: 'var(--tx2)', marginBottom: 22 }}>{msg || 'ไม่สามารถย้อนกลับได้'}</div><div style={{ display: 'flex', gap: 9 }}><button className="bg" style={{ flex: 1, padding: '10px' }} onClick={onNo}>ยกเลิก</button><button className="bd" style={{ flex: 1, padding: '10px' }} onClick={onOk}>ลบ</button></div></div></div>; }
-        function IPicker({ icons, sel, onSel, colors, selC, onSelC }) { return <div><div className="ipg">{icons.map(ic => <button key={ic} className={`ipb${sel === ic ? ' on' : ''}`} onClick={() => onSel(ic)}><i className={`fa-solid ${ic}`}></i></button>)}</div>{colors && <div className="clg">{colors.map(c => <div key={c} className={`cld${selC === c ? ' on' : ''}`} style={{ background: c }} onClick={() => onSelC(c)}></div>)}</div>}</div>; }
+        function Confirm({ msg, onOk, onNo }) { return <div className="cfw nexo-confirm-wrapper" onClick={onNo}><div className="cfb nexo-confirm-box" onClick={e => e.stopPropagation()}><div style={{ fontSize: 36, marginBottom: 10 }}>🗑️</div><div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>ยืนยันการลบ?</div><div style={{ fontSize: 12, color: 'var(--tx2)', marginBottom: 22 }}>{msg || 'ไม่สามารถย้อนกลับได้'}</div><div style={{ display: 'flex', gap: 9 }}><button className="bg nexo-btn-ghost" style={{ flex: 1, padding: '10px' }} onClick={onNo}>ยกเลิก</button><button className="bd nexo-btn-danger" style={{ flex: 1, padding: '10px' }} onClick={onOk}>ลบ</button></div></div></div>; }
+        function IPicker({ icons, sel, onSel, colors, selC, onSelC }) { return <div><div className="ipg nexo-icon-picker-grid">{icons.map(ic => <button key={ic} className={`ipb nexo-icon-picker-btn${sel === ic ? ' on active' : ''}`} onClick={() => onSel(ic)}><i className={`fa-solid ${ic}`}></i></button>)}</div>{colors && <div className="clg nexo-color-grid">{colors.map(c => <div key={c} className={`cld nexo-color-dot${selC === c ? ' on active' : ''}`} style={{ background: c }} onClick={() => onSelC(c)}></div>)}</div>}</div>; }
 
-        /* ════ CHART ════ */
+        /* ════ nexo CHART ════ */
         function ChartV({ txs, ec, ic, period }) {
             const br = useRef(), per = useRef(), pir = useRef();
             const bi = useRef(), pei = useRef(), pii = useRef();
@@ -1805,18 +2008,18 @@
                 return () => { if (pei.current) pei.current.destroy(); if (pii.current) pii.current.destroy(); };
             }, [ct, ebc, ibc, ec, ic, isDark]);
             return <div>
-                <div className="ptabs">{[{ k: 'bar', l: 'แท่ง', i: 'fa-chart-bar' }, { k: 'pie', l: 'วงลม', i: 'fa-chart-pie' }].map(({ k, l, i }) => <button key={k} className={`pt${ct === k ? ' on' : ''}`} onClick={() => setCt(k)}><i className={`fa-solid ${i}`} style={{ marginRight: 5 }}></i>{l}</button>)}</div>
-                {ct === 'bar' && <div className="c3" style={{ padding: '15px', marginBottom: 10 }}><div className="stt" style={{ marginBottom: 11 }}><i className="fa-solid fa-chart-bar"></i>รายรับ vs รายจ่ายรายเดือน</div>{mon.length === 0 ? <div className="emp"><i className="fa-solid fa-chart-bar"></i><p>ยังไม่มีข้อมูล</p></div> : <div className="chwp"><canvas ref={br}></canvas></div>}</div>}
+                <div className="ptabs nexo-period-tabs">{[{ k: 'bar', l: 'แท่ง', i: 'fa-chart-bar' }, { k: 'pie', l: 'วงลม', i: 'fa-chart-pie' }].map(({ k, l, i }) => <button key={k} className={`pt nexo-period-tab${ct === k ? ' on active' : ''}`} onClick={() => setCt(k)}><i className={`fa-solid ${i}`} style={{ marginRight: 5 }}></i>{l}</button>)}</div>
+                {ct === 'bar' && <div className="c3 nexo-card-3d" style={{ padding: '15px', marginBottom: 10 }}><div className="stt nexo-section-title" style={{ marginBottom: 11 }}><i className="fa-solid fa-chart-bar"></i>รายรับ vs รายจ่ายรายเดือน</div>{mon.length === 0 ? <div className="emp nexo-empty-state"><i className="fa-solid fa-chart-bar"></i><p>ยังไม่มีข้อมูล</p></div> : <div className="chwp nexo-chart-wrapper"><canvas ref={br}></canvas></div>}</div>}
                 {ct === 'pie' && <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                     {[{ ref: per, lbl: 'รายจ่าย', c: 'var(--exp)', d: ebc }, { ref: pir, lbl: 'รายรับ', c: 'var(--inc)', d: ibc }].map(({ ref, lbl, c, d }) => (
-                        <div key={lbl} className="c3" style={{ padding: '13px' }}><div style={{ fontSize: 10, fontWeight: 700, color: c, marginBottom: 9, textTransform: 'uppercase', letterSpacing: '.07em' }}>{lbl}</div>
+                        <div key={lbl} className="c3 nexo-card-3d" style={{ padding: '13px' }}><div style={{ fontSize: 10, fontWeight: 700, color: c, marginBottom: 9, textTransform: 'uppercase', letterSpacing: '.07em' }}>{lbl}</div>
                             {Object.keys(d).length === 0 ? <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--tx2)', fontSize: 11 }}>ไม่มีข้อมูล</div> : <div style={{ height: 165 }}><canvas ref={ref}></canvas></div>}</div>
                     ))}
                 </div>}
             </div>;
         }
 
-        /* ════ TX MODAL ════ */
+        /* ════ nexo TX MODAL ════ */
         function TxM({ onClose, onSave, wallets, ec, ic, editTx }) {
             const now = thNow();
             const [type, setType] = useState(editTx?.type || 'expense');
@@ -1828,61 +2031,61 @@
             const [note, setNote] = useState(editTx?.note || '');
             const cats = type === 'income' ? ic : ec; const ok = amount && catId && walletId;
             const save = () => { if (!ok) return; onSave({ id: editTx?.id || uid(), type, amount: parseFloat(amount), catId, walletId, date, time, note }); onClose(); };
-            return <div className="ov" onClick={e => e.target === e.currentTarget && onClose()}>
-                <div className="mb">
-                    <div className="mhd"><span className="mttl"><i className={`fa-solid ${editTx ? 'fa-pen-to-square' : 'fa-circle-plus'}`}></i>{editTx ? 'แก้ไขรายการ' : 'เพิ่มรายการ'}</span><button className="mcls" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
-                    <div className="mbdy">
-                        <div className="fg"><label className="fl">ประเภท</label><div className="ttog"><button className={`tb inc${type === 'income' ? ' on' : ''}`} onClick={() => { setType('income'); setCatId(''); }}><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</button><button className={`tb exp${type === 'expense' ? ' on' : ''}`} onClick={() => { setType('expense'); setCatId(''); }}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</button></div></div>
-                        <div className="fg"><label className="fl">จำนวนเงิน (บาท)</label><div style={{ position: 'relative' }}><span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--tx2)', fontWeight: 800, fontSize: 16 }}>฿</span><input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00" min="0" step="0.01" style={{ paddingLeft: 34, fontFamily: 'JetBrains Mono,monospace', fontWeight: 700, fontSize: 19, letterSpacing: '-.5px' }} /></div></div>
-                        <div className="fg"><label className="fl">หมวดหมู่</label><div className="cgrd">{cats.map(c => { const s = catId === c.id; return <div key={c.id} className={`cch${s ? ' on' : ''}`} style={s ? { borderColor: c.color, background: `${c.color}20`, color: c.color } : {}} onClick={() => setCatId(c.id)}><i className={`fa-solid ${c.icon} cci`} style={{ color: c.color }}></i>{c.name}</div>; })}</div></div>
-                        <div className="fg"><label className="fl">กระเป๋าเงิน</label><select value={walletId} onChange={e => setWalletId(e.target.value)}>{wallets.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}</select></div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }} className="fg"><div><label className="fl">วันที่</label><input type="date" value={date} onChange={e => setDate(e.target.value)} /></div><div><label className="fl">เวลา</label><input type="time" value={time} onChange={e => setTime(e.target.value)} /></div></div>
-                        <div className="fg"><label className="fl">บันทึก / โน๊ต</label><textarea value={note} onChange={e => setNote(e.target.value)} placeholder="รายละเอียดเพิ่มเติม..." /></div>
-                        <div style={{ display: 'flex', gap: 9 }}><button className="bp" style={{ flex: 2, opacity: ok ? 1 : .45, cursor: ok ? 'pointer' : 'not-allowed' }} onClick={save}><i className="fa-solid fa-check"></i>{editTx ? 'บันทึก' : 'เพิ่มรายการ'}</button><button className="bg" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
+            return <div className="ov nexo-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+                <div className="mb nexo-modal">
+                    <div className="mhd nexo-modal-header"><span className="mttl nexo-modal-title"><i className={`fa-solid ${editTx ? 'fa-pen-to-square' : 'fa-circle-plus'}`}></i>{editTx ? 'แก้ไขรายการ' : 'เพิ่มรายการ'}</span><button className="mcls nexo-modal-close" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
+                    <div className="mbdy nexo-modal-body">
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">ประเภท</label><div className="ttog nexo-type-toggle"><button className={`tb nexo-toggle-btn inc${type === 'income' ? ' on active' : ''}`} onClick={() => { setType('income'); setCatId(''); }}><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</button><button className={`tb nexo-toggle-btn exp${type === 'expense' ? ' on active' : ''}`} onClick={() => { setType('expense'); setCatId(''); }}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</button></div></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">จำนวนเงิน (บาท)</label><div style={{ position: 'relative' }}><span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--tx2)', fontWeight: 800, fontSize: 16 }}>฿</span><input type="number" className="nexo-input nexo-input-number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00" min="0" step="0.01" style={{ paddingLeft: 34, fontFamily: 'JetBrains Mono,monospace', fontWeight: 700, fontSize: 19, letterSpacing: '-.5px' }} /></div></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">หมวดหมู่</label><div className="cgrd nexo-category-grid">{cats.map(c => { const s = catId === c.id; return <div key={c.id} className={`cch nexo-category-chip${s ? ' on active' : ''}`} style={s ? { borderColor: c.color, background: `${c.color}20`, color: c.color } : {}} onClick={() => setCatId(c.id)}><i className={`fa-solid ${c.icon} cci nexo-category-icon`} style={{ color: c.color }}></i>{c.name}</div>; })}</div></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">กระเป๋าเงิน</label><select className="nexo-select" value={walletId} onChange={e => setWalletId(e.target.value)}>{wallets.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}</select></div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }} className="fg nexo-form-group"><div><label className="fl nexo-form-label">วันที่</label><input type="date" className="nexo-input nexo-input-date" value={date} onChange={e => setDate(e.target.value)} /></div><div><label className="fl nexo-form-label">เวลา</label><input type="time" className="nexo-input nexo-input-time" value={time} onChange={e => setTime(e.target.value)} /></div></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">บันทึก / โน๊ต</label><textarea className="nexo-textarea" value={note} onChange={e => setNote(e.target.value)} placeholder="รายละเอียดเพิ่มเติม..." /></div>
+                        <div style={{ display: 'flex', gap: 9 }}><button className="bp nexo-btn-primary" style={{ flex: 2, opacity: ok ? 1 : .45, cursor: ok ? 'pointer' : 'not-allowed' }} onClick={save}><i className="fa-solid fa-check"></i>{editTx ? 'บันทึก' : 'เพิ่มรายการ'}</button><button className="bg nexo-btn-ghost" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
                     </div>
                 </div>
             </div>;
         }
 
-        /* ════ WALLET MODAL ════ */
+        /* ════ nexo WALLET MODAL ════ */
         function WM({ onClose, onSave, editW }) {
             const [name, setName] = useState(editW?.name || ''); const [icon, setIcon] = useState(editW?.icon || 'fa-wallet'); const [color, setColor] = useState(editW?.color || '#6c63ff');
-            return <div className="ov" onClick={e => e.target === e.currentTarget && onClose()}>
-                <div className="mb">
-                    <div className="mhd"><span className="mttl"><i className="fa-solid fa-wallet" style={{ color: 'var(--gld)' }}></i>{editW ? 'แก้ไขกระเป๋า' : 'สร้างกระเป๋าเงิน'}</span><button className="mcls" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
-                    <div className="mbdy">
-                        <div className="fg"><label className="fl">ชื่อกระเป๋า</label><input value={name} onChange={e => setName(e.target.value)} placeholder="เช่น กระเป๋าหลัก" /></div>
-                        <div className="fg"><label className="fl">ไอคอน & สี</label><IPicker icons={WI} sel={icon} onSel={setIcon} colors={COLS} selC={color} onSelC={setColor} /></div>
+            return <div className="ov nexo-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+                <div className="mb nexo-modal">
+                    <div className="mhd nexo-modal-header"><span className="mttl nexo-modal-title"><i className="fa-solid fa-wallet" style={{ color: 'var(--gld)' }}></i>{editW ? 'แก้ไขกระเป๋า' : 'สร้างกระเป๋าเงิน'}</span><button className="mcls nexo-modal-close" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
+                    <div className="mbdy nexo-modal-body">
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">ชื่อกระเป๋า</label><input className="nexo-input" value={name} onChange={e => setName(e.target.value)} placeholder="เช่น กระเป๋าหลัก" /></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">ไอคอน & สี</label><IPicker icons={WI} sel={icon} onSel={setIcon} colors={COLS} selC={color} onSelC={setColor} /></div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 15px', borderRadius: 13, background: 'var(--bg2)', border: '1px solid var(--bd0)', marginBottom: 14 }}>
                             <div style={{ width: 40, height: 40, borderRadius: 13, background: `${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, boxShadow: '0 3px 10px var(--sh)' }}><i className={`fa-solid ${icon}`} style={{ color }}></i></div>
                             <span style={{ fontWeight: 700 }}>{name || 'ชื่อกระเป๋า'}</span>
                         </div>
-                        <div style={{ display: 'flex', gap: 9 }}><button className="bp" style={{ flex: 2, opacity: name ? 1 : .45 }} disabled={!name} onClick={() => { onSave({ id: editW?.id || uid(), name, icon, color }); onClose(); }}><i className="fa-solid fa-check"></i>บันทึก</button><button className="bg" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
+                        <div style={{ display: 'flex', gap: 9 }}><button className="bp nexo-btn-primary" style={{ flex: 2, opacity: name ? 1 : .45 }} disabled={!name} onClick={() => { onSave({ id: editW?.id || uid(), name, icon, color }); onClose(); }}><i className="fa-solid fa-check"></i>บันทึก</button><button className="bg nexo-btn-ghost" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
                     </div>
                 </div>
             </div>;
         }
 
-        /* ════ CAT MODAL ════ */
+        /* ════ nexo CAT MODAL ════ */
         function CM({ onClose, onSave, editC, type }) {
             const [name, setName] = useState(editC?.name || ''); const [icon, setIcon] = useState(editC?.icon || 'fa-circle-dot'); const [color, setColor] = useState(editC?.color || '#6b7280');
-            return <div className="ov" onClick={e => e.target === e.currentTarget && onClose()}>
-                <div className="mb">
-                    <div className="mhd"><span className="mttl"><i className={`fa-solid ${type === 'income' ? 'fa-arrow-trend-up' : 'fa-tag'}`} style={{ color: type === 'income' ? 'var(--inc)' : 'var(--acc)' }}></i>{editC ? 'แก้ไขหมวดหมู่' : 'สร้างหมวดหมู่'}</span><button className="mcls" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
-                    <div className="mbdy">
-                        <div className="fg"><label className="fl">ชื่อหมวดหมู่</label><input value={name} onChange={e => setName(e.target.value)} placeholder="เช่น ค่าน้ำ" /></div>
-                        <div className="fg"><label className="fl">ไอคอน & สี</label><IPicker icons={CI} sel={icon} onSel={setIcon} colors={COLS} selC={color} onSelC={setColor} /></div>
+            return <div className="ov nexo-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+                <div className="mb nexo-modal">
+                    <div className="mhd nexo-modal-header"><span className="mttl nexo-modal-title"><i className={`fa-solid ${type === 'income' ? 'fa-arrow-trend-up' : 'fa-tag'}`} style={{ color: type === 'income' ? 'var(--inc)' : 'var(--acc)' }}></i>{editC ? 'แก้ไขหมวดหมู่' : 'สร้างหมวดหมู่'}</span><button className="mcls nexo-modal-close" onClick={onClose}><i className="fa-solid fa-xmark"></i></button></div>
+                    <div className="mbdy nexo-modal-body">
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">ชื่อหมวดหมู่</label><input className="nexo-input" value={name} onChange={e => setName(e.target.value)} placeholder="เช่น ค่าน้ำ" /></div>
+                        <div className="fg nexo-form-group"><label className="fl nexo-form-label">ไอคอน & สี</label><IPicker icons={CI} sel={icon} onSel={setIcon} colors={COLS} selC={color} onSelC={setColor} /></div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 15px', borderRadius: 13, background: 'var(--bg2)', border: '1px solid var(--bd0)', marginBottom: 14 }}>
                             <div style={{ width: 36, height: 36, borderRadius: 11, background: `${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17 }}><i className={`fa-solid ${icon}`} style={{ color }}></i></div>
                             <span style={{ fontWeight: 700 }}>{name || 'ชื่อหมวดหมู่'}</span>
                         </div>
-                        <div style={{ display: 'flex', gap: 9 }}><button className="bp" style={{ flex: 2, opacity: name ? 1 : .45 }} disabled={!name} onClick={() => { onSave({ id: editC?.id || uid(), name, icon, color }); onClose(); }}><i className="fa-solid fa-check"></i>บันทึก</button><button className="bg" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
+                        <div style={{ display: 'flex', gap: 9 }}><button className="bp nexo-btn-primary" style={{ flex: 2, opacity: name ? 1 : .45 }} disabled={!name} onClick={() => { onSave({ id: editC?.id || uid(), name, icon, color }); onClose(); }}><i className="fa-solid fa-check"></i>บันทึก</button><button className="bg nexo-btn-ghost" style={{ flex: 1 }} onClick={onClose}>ยกเลิก</button></div>
                     </div>
                 </div>
             </div>;
         }
 
-        /* ════ HOME ════ */
+        /* ════ nexo HOME ════ */
         function Home({ txs, wallets, ec, ic, onEdit }) {
             const [per, setPer] = useState('1m'); const [wid, setWid] = useState('all');
             const filt = useMemo(() => fpd(txs, per, wid), [txs, per, wid]);
@@ -1893,34 +2096,34 @@
             const gc = tx => (tx.type === 'income' ? ic : ec).find(c => c.id === tx.catId);
             const gw = id => wallets.find(w => w.id === id);
             const rec = [...filt].sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`)).slice(0, 30);
-            return <div className="pg">
-                <div className="hero">
-                    <div className="hl"><i className="fa-solid fa-layer-group" style={{ marginRight: 6 }}></i>ยอดคงเหลือรวมทุกกระเป๋า</div>
-                    <div className="ha">{totBal < 0 ? '-' : ''}฿{ff(Math.abs(totBal))}</div>
-                    <div className="hs">{wallets.length} กระเป๋า · {txs.length} รายการทั้งหมด</div>
-                    <div className="hchips">
-                        <div className="hch"><div className="hcl"><i className="fa-solid fa-arrow-trend-up" style={{ marginRight: 3 }}></i>รายรับ</div><div className="hcv">฿{fm(inc)}</div></div>
-                        <div className="hch"><div className="hcl"><i className="fa-solid fa-arrow-trend-down" style={{ marginRight: 3 }}></i>รายจ่าย</div><div className="hcv">฿{fm(exp)}</div></div>
-                        <div className="hch"><div className="hcl"><i className="fa-solid fa-scale-balanced" style={{ marginRight: 3 }}></i>คงเหลือ</div><div className="hcv" style={{ color: bal >= 0 ? '#90ffda' : '#ffaabb' }}>{bal < 0 ? '-' : ''}฿{fm(Math.abs(bal))}</div></div>
+            return <div className="pg nexo-page">
+                <div className="hero nexo-hero">
+                    <div className="hl nexo-hero-label"><i className="fa-solid fa-layer-group" style={{ marginRight: 6 }}></i>ยอดคงเหลือรวมทุกกระเป๋า</div>
+                    <div className="ha nexo-hero-amount">{totBal < 0 ? '-' : ''}฿{ff(Math.abs(totBal))}</div>
+                    <div className="hs nexo-hero-sub">{wallets.length} กระเป๋า · {txs.length} รายการทั้งหมด</div>
+                    <div className="hchips nexo-hero-chips">
+                        <div className="hch nexo-hero-chip"><div className="hcl nexo-hero-chip-label"><i className="fa-solid fa-arrow-trend-up" style={{ marginRight: 3 }}></i>รายรับ</div><div className="hcv nexo-hero-chip-value">฿{fm(inc)}</div></div>
+                        <div className="hch nexo-hero-chip"><div className="hcl nexo-hero-chip-label"><i className="fa-solid fa-arrow-trend-down" style={{ marginRight: 3 }}></i>รายจ่าย</div><div className="hcv nexo-hero-chip-value">฿{fm(exp)}</div></div>
+                        <div className="hch nexo-hero-chip"><div className="hcl nexo-hero-chip-label"><i className="fa-solid fa-scale-balanced" style={{ marginRight: 3 }}></i>คงเหลือ</div><div className="hcv nexo-hero-chip-value" style={{ color: bal >= 0 ? '#90ffda' : '#ffaabb' }}>{bal < 0 ? '-' : ''}฿{fm(Math.abs(bal))}</div></div>
                     </div>
                 </div>
-                {wallets.length > 0 && <div className="wtabs"><button className={`wt${wid === 'all' ? ' on' : ''}`} onClick={() => setWid('all')}><i className="fa-solid fa-layer-group"></i>ทั้งหมด</button>{wallets.map(w => <button key={w.id} className={`wt${wid === w.id ? ' on' : ''}`} style={wid === w.id ? { borderColor: `${w.color}88`, background: `${w.color}12`, color: w.color } : {}} onClick={() => setWid(w.id)}><i className={`fa-solid ${w.icon}`}></i>{w.name}</button>)}</div>}
-                <div className="ptabs">{PRDS.map(p => <button key={p.k} className={`pt${per === p.k ? ' on' : ''}`} onClick={() => setPer(p.k)}>{p.l}</button>)}</div>
-                <div className="shd"><span className="stt"><i className="fa-solid fa-clock-rotate-left"></i>รายการล่าสุด</span><span style={{ fontSize: 10, color: 'var(--tx2)' }}>{filt.length} รายการ</span></div>
-                <div className="c3" style={{ padding: '3px 15px' }}>
-                    {rec.length === 0 ? <div className="emp"><i className="fa-solid fa-receipt"></i><p>ยังไม่มีรายการ</p></div>
+                {wallets.length > 0 && <div className="wtabs nexo-wallet-tabs"><button className={`wt nexo-wallet-tab${wid === 'all' ? ' on active' : ''}`} onClick={() => setWid('all')}><i className="fa-solid fa-layer-group"></i>ทั้งหมด</button>{wallets.map(w => <button key={w.id} className={`wt nexo-wallet-tab${wid === w.id ? ' on active' : ''}`} style={wid === w.id ? { borderColor: `${w.color}88`, background: `${w.color}12`, color: w.color } : {}} onClick={() => setWid(w.id)}><i className={`fa-solid ${w.icon}`}></i>{w.name}</button>)}</div>}
+                <div className="ptabs nexo-period-tabs">{PRDS.map(p => <button key={p.k} className={`pt nexo-period-tab${per === p.k ? ' on active' : ''}`} onClick={() => setPer(p.k)}>{p.l}</button>)}</div>
+                <div className="shd nexo-section-header"><span className="stt nexo-section-title"><i className="fa-solid fa-clock-rotate-left"></i>รายการล่าสุด</span><span style={{ fontSize: 10, color: 'var(--tx2)' }}>{filt.length} รายการ</span></div>
+                <div className="c3 nexo-card-3d" style={{ padding: '3px 15px' }}>
+                    {rec.length === 0 ? <div className="emp nexo-empty-state"><i className="fa-solid fa-receipt"></i><p>ยังไม่มีรายการ</p></div>
                         : rec.map(tx => {
-                            const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr" onClick={() => onEdit(tx)}>
-                                <div className="txic" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
-                                <div className="txin"><div className="txca">{c?.name || 'ไม่ระบุ'}</div><div className="txme">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
-                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)}</div></div>
+                            const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr nexo-transaction-row" onClick={() => onEdit(tx)}>
+                                <div className="txic nexo-transaction-icon" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
+                                <div className="txin nexo-transaction-info"><div className="txca nexo-transaction-category">{c?.name || 'ไม่ระบุ'}</div><div className="txme nexo-transaction-meta">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
+                                <div className="txrt nexo-transaction-right"><div className="txam nexo-transaction-amount" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt nexo-transaction-date">{fd(tx.date)}</div></div>
                             </div>;
                         })}
                 </div>
             </div>;
         }
 
-        /* ════ SUMMARY ════ */
+        /* ════ nexo SUMMARY ════ */
         function Summary({ txs, ec, ic }) {
             const [per, setPer] = useState('1m');
             const filt = useMemo(() => fpd(txs, per, null), [txs, per]);
@@ -1928,32 +2131,32 @@
             const exp = filt.filter(t => t.type === 'expense').reduce((s, t) => s + +t.amount, 0);
             const ebc = useMemo(() => { const m = {}; filt.filter(t => t.type === 'expense').forEach(t => { m[t.catId] = (m[t.catId] || 0) + +t.amount; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }, [filt]);
             const ibc = useMemo(() => { const m = {}; filt.filter(t => t.type === 'income').forEach(t => { m[t.catId] = (m[t.catId] || 0) + +t.amount; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }, [filt]);
-            const CB = ({ entries, cats, total, col }) => <div className="c3" style={{ padding: '3px 15px', marginTop: 4 }}>
-                {entries.length === 0 ? <div className="emp" style={{ padding: '22px' }}><i className="fa-solid fa-receipt"></i><p>ไม่มีข้อมูล</p></div>
+            const CB = ({ entries, cats, total, col }) => <div className="c3 nexo-card-3d" style={{ padding: '3px 15px', marginTop: 4 }}>
+                {entries.length === 0 ? <div className="emp nexo-empty-state" style={{ padding: '22px' }}><i className="fa-solid fa-receipt"></i><p>ไม่มีข้อมูล</p></div>
                     : entries.map(([cid, amt]) => {
                         const c = cats.find(x => x.id === cid); const pct = total > 0 ? (amt / total * 100).toFixed(1) : 0; return <div key={cid} style={{ padding: '10px 0', borderBottom: '1px solid var(--bd0)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                                 <div style={{ width: 32, height: 32, borderRadius: 10, background: `${c?.color || '#888'}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 2px 7px var(--sh)' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`} style={{ color: c?.color || '#888', fontSize: 13 }}></i></div>
                                 <div style={{ flex: 1 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span style={{ fontSize: 13, fontWeight: 700 }}>{c?.name || 'ไม่ระบุ'}</span><span className="jb" style={{ fontSize: 12, fontWeight: 700, color: col }}>{pct}%</span></div>
-                                    <div className="pb"><div className="pf" style={{ width: `${pct}%`, background: c?.color || '#888' }}></div></div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span style={{ fontSize: 13, fontWeight: 700 }}>{c?.name || 'ไม่ระบุ'}</span><span className="jb nexo-mono" style={{ fontSize: 12, fontWeight: 700, color: col }}>{pct}%</span></div>
+                                    <div className="pb nexo-progress-bar"><div className="pf nexo-progress-fill" style={{ width: `${pct}%`, background: c?.color || '#888' }}></div></div>
                                     <div style={{ fontSize: 10, color: 'var(--tx2)', marginTop: 2 }}>฿{ff(amt)}</div>
                                 </div>
                             </div>
                         </div>;
                     })}</div>;
-            return <div className="pg">
-                <div className="phd"><div className="ptl"><i className="fa-solid fa-chart-column"></i>สรุปรายงาน</div></div>
-                <div className="ptabs">{PRDS.map(p => <button key={p.k} className={`pt${per === p.k ? ' on' : ''}`} onClick={() => setPer(p.k)}>{p.l}</button>)}</div>
-                <div className="sg"><div className="sc sci"><div className="slb"><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</div><div className="sv" style={{ color: 'var(--inc)' }}>฿{fm(inc)}</div></div><div className="sc sce"><div className="slb"><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</div><div className="sv" style={{ color: 'var(--exp)' }}>฿{fm(exp)}</div></div></div>
-                <div className="scb" style={{ marginBottom: 13 }}><div className="slb"><i className="fa-solid fa-scale-balanced"></i>คงเหลือช่วงนี้</div><div className="sv" style={{ color: inc - exp >= 0 ? 'var(--inc)' : 'var(--exp)' }}>฿{ff(inc - exp)}</div></div>
+            return <div className="pg nexo-page">
+                <div className="phd nexo-page-header"><div className="ptl nexo-page-title"><i className="fa-solid fa-chart-column"></i>สรุปรายงาน</div></div>
+                <div className="ptabs nexo-period-tabs">{PRDS.map(p => <button key={p.k} className={`pt nexo-period-tab${per === p.k ? ' on active' : ''}`} onClick={() => setPer(p.k)}>{p.l}</button>)}</div>
+                <div className="sg nexo-summary-grid"><div className="sc sci nexo-summary-card nexo-summary-card-income"><div className="slb nexo-summary-label"><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</div><div className="sv nexo-summary-value" style={{ color: 'var(--inc)' }}>฿{fm(inc)}</div></div><div className="sc sce nexo-summary-card nexo-summary-card-expense"><div className="slb nexo-summary-label"><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</div><div className="sv nexo-summary-value" style={{ color: 'var(--exp)' }}>฿{fm(exp)}</div></div></div>
+                <div className="scb nexo-summary-card-balance" style={{ marginBottom: 13 }}><div className="slb nexo-summary-label"><i className="fa-solid fa-scale-balanced"></i>คงเหลือช่วงนี้</div><div className="sv nexo-summary-value" style={{ color: inc - exp >= 0 ? 'var(--inc)' : 'var(--exp)' }}>฿{ff(inc - exp)}</div></div>
                 <ChartV txs={txs} ec={ec} ic={ic} period={per} />
-                <div style={{ marginTop: 13 }}><div className="shd"><span className="stt" style={{ color: 'var(--exp)' }}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่ายตามหมวดหมู่</span></div><CB entries={ebc} cats={ec} total={exp} col="var(--exp)" /></div>
-                <div style={{ marginTop: 13 }}><div className="shd"><span className="stt" style={{ color: 'var(--inc)' }}><i className="fa-solid fa-arrow-trend-up"></i>รายรับตามหมวดหมู่</span></div><CB entries={ibc} cats={ic} total={inc} col="var(--inc)" /></div>
+                <div style={{ marginTop: 13 }}><div className="shd nexo-section-header"><span className="stt nexo-section-title" style={{ color: 'var(--exp)' }}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่ายตามหมวดหมู่</span></div><CB entries={ebc} cats={ec} total={exp} col="var(--exp)" /></div>
+                <div style={{ marginTop: 13 }}><div className="shd nexo-section-header"><span className="stt nexo-section-title" style={{ color: 'var(--inc)' }}><i className="fa-solid fa-arrow-trend-up"></i>รายรับตามหมวดหมู่</span></div><CB entries={ibc} cats={ic} total={inc} col="var(--inc)" /></div>
             </div>;
         }
 
-        /* ════ HISTORY ════ */
+        /* ════ nexo HISTORY ════ */
         function History({ txs, setTxs, wallets, ec, ic, toast }) {
             const [srch, setSrch] = useState(''); const [ft, setFt] = useState('all');
             const [view, setView] = useState(null); const [conf, setConf] = useState(null); const [showEd, setShowEd] = useState(false);
@@ -1982,34 +2185,34 @@
                     toast('ลบรายการแล้ว');
                 } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
-            return <div className="pg">
-                <div className="phd"><div className="ptl"><i className="fa-solid fa-clock-rotate-left"></i>ประวัติรายการ</div></div>
-                <div style={{ position: 'relative', marginBottom: 9 }}><i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--tx2)', fontSize: 13 }}></i><input value={srch} onChange={e => setSrch(e.target.value)} placeholder="ค้นหาหมวดหมู่ หรือโน๊ต..." style={{ paddingLeft: 38 }} /></div>
-                <div className="ptabs" style={{ marginBottom: 11 }}>{[{ k: 'all', l: 'ทั้งหมด' }, { k: 'income', l: 'รายรับ' }, { k: 'expense', l: 'รายจ่าย' }].map(f => <button key={f.k} className={`pt${ft === f.k ? ' on' : ''}`} onClick={() => setFt(f.k)}>{f.l}</button>)}</div>
+            return <div className="pg nexo-page">
+                <div className="phd nexo-page-header"><div className="ptl nexo-page-title"><i className="fa-solid fa-clock-rotate-left"></i>ประวัติรายการ</div></div>
+                <div style={{ position: 'relative', marginBottom: 9 }}><i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--tx2)', fontSize: 13 }}></i><input className="nexo-input" value={srch} onChange={e => setSrch(e.target.value)} placeholder="ค้นหาหมวดหมู่ หรือโน๊ต..." style={{ paddingLeft: 38 }} /></div>
+                <div className="ptabs nexo-period-tabs" style={{ marginBottom: 11 }}>{[{ k: 'all', l: 'ทั้งหมด' }, { k: 'income', l: 'รายรับ' }, { k: 'expense', l: 'รายจ่าย' }].map(f => <button key={f.k} className={`pt nexo-period-tab${ft === f.k ? ' on active' : ''}`} onClick={() => setFt(f.k)}>{f.l}</button>)}</div>
                 <div style={{ fontSize: 10, color: 'var(--tx2)', marginBottom: 9, textAlign: 'right' }}>{filt.length} รายการ</div>
-                <div className="c3" style={{ padding: '3px 15px' }}>
-                    {filt.length === 0 ? <div className="emp"><i className="fa-solid fa-receipt"></i><p>ไม่พบรายการ</p></div>
+                <div className="c3 nexo-card-3d" style={{ padding: '3px 15px' }}>
+                    {filt.length === 0 ? <div className="emp nexo-empty-state"><i className="fa-solid fa-receipt"></i><p>ไม่พบรายการ</p></div>
                         : filt.map(tx => {
-                            const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr" onClick={() => setView(tx)}>
-                                <div className="txic" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
-                                <div className="txin"><div className="txca">{c?.name || 'ไม่ระบุ'}</div><div className="txme">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
-                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)} {tx.time}</div></div>
+                            const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr nexo-transaction-row" onClick={() => setView(tx)}>
+                                <div className="txic nexo-transaction-icon" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
+                                <div className="txin nexo-transaction-info"><div className="txca nexo-transaction-category">{c?.name || 'ไม่ระบุ'}</div><div className="txme nexo-transaction-meta">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
+                                <div className="txrt nexo-transaction-right"><div className="txam nexo-transaction-amount" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt nexo-transaction-date">{fd(tx.date)} {tx.time}</div></div>
                             </div>;
                         })}
                 </div>
                 {view && !showEd && (() => {
-                    const c = gc(view); const w = gw(view.walletId); return <div className="ov" onClick={e => e.target === e.currentTarget && setView(null)}>
-                        <div className="mb"><div className="mhd"><span className="mttl"><i className="fa-solid fa-receipt"></i>รายละเอียด</span><button className="mcls" onClick={() => setView(null)}><i className="fa-solid fa-xmark"></i></button></div>
-                            <div className="mbdy">
+                    const c = gc(view); const w = gw(view.walletId); return <div className="ov nexo-overlay" onClick={e => e.target === e.currentTarget && setView(null)}>
+                        <div className="mb nexo-modal"><div className="mhd nexo-modal-header"><span className="mttl nexo-modal-title"><i className="fa-solid fa-receipt"></i>รายละเอียด</span><button className="mcls nexo-modal-close" onClick={() => setView(null)}><i className="fa-solid fa-xmark"></i></button></div>
+                            <div className="mbdy nexo-modal-body">
                                 <div style={{ textAlign: 'center', padding: '14px 0 18px' }}>
                                     <div style={{ width: 56, height: 56, borderRadius: 17, background: `${c?.color || '#888'}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 11px', boxShadow: '0 4px 14px var(--sh)', fontSize: 23 }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`} style={{ color: c?.color || '#888' }}></i></div>
                                     <div style={{ fontSize: 12, color: 'var(--tx2)', marginBottom: 3 }}>{c?.name}</div>
-                                    <div className="jb" style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-1px', color: view.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{view.type === 'income' ? '+' : '-'}฿{ff(view.amount)}</div>
+                                    <div className="jb nexo-mono" style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-1px', color: view.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{view.type === 'income' ? '+' : '-'}฿{ff(view.amount)}</div>
                                 </div>
-                                <div className="c3" style={{ padding: '3px 15px', marginBottom: 15 }}>
+                                <div className="c3 nexo-card-3d" style={{ padding: '3px 15px', marginBottom: 15 }}>
                                     {[{ i: 'fa-calendar', l: 'วันที่', v: fd(view.date) }, { i: 'fa-clock', l: 'เวลา', v: view.time }, { i: 'fa-wallet', l: 'กระเป๋า', v: w?.name }, { i: 'fa-note-sticky', l: 'โน๊ต', v: view.note || '-' }].filter(r => r.v).map(r => <div key={r.l} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 0', borderBottom: '1px solid var(--bd0)' }}><i className={`fa-solid ${r.i}`} style={{ color: 'var(--tx2)', width: 15, textAlign: 'center' }}></i><span style={{ fontSize: 11, color: 'var(--tx2)', minWidth: 42 }}>{r.l}</span><span style={{ fontSize: 13, fontWeight: 600 }}>{r.v}</span></div>)}
                                 </div>
-                                <div style={{ display: 'flex', gap: 8 }}><button className="bg" style={{ flex: 1 }} onClick={() => setShowEd(true)}><i className="fa-solid fa-pen"></i>แก้ไข</button><button className="bd" style={{ flex: 1 }} onClick={() => setConf(view.id)}><i className="fa-solid fa-trash"></i>ลบ</button><button className="bg" style={{ flex: 1 }} onClick={() => setView(null)}>ปิด</button></div>
+                                <div style={{ display: 'flex', gap: 8 }}><button className="bg nexo-btn-ghost" style={{ flex: 1 }} onClick={() => setShowEd(true)}><i className="fa-solid fa-pen"></i>แก้ไข</button><button className="bd nexo-btn-danger" style={{ flex: 1 }} onClick={() => setConf(view.id)}><i className="fa-solid fa-trash"></i>ลบ</button><button className="bg nexo-btn-ghost" style={{ flex: 1 }} onClick={() => setView(null)}>ปิด</button></div>
                             </div></div>
                     </div>;
                 })()}
@@ -2018,7 +2221,7 @@
             </div>;
         }
 
-        /* ════ WALLETS PAGE ════ */
+        /* ════ nexo WALLETS PAGE ════ */
         function Wallets({ wallets, setWallets, txs, toast }) {
             const [showM, setShowM] = useState(false); const [editW, setEditW] = useState(null); const [conf, setConf] = useState(null);
             const gb = wid => { const i = txs.filter(t => t.walletId === wid && t.type === 'income').reduce((s, t) => s + +t.amount, 0); const e = txs.filter(t => t.walletId === wid && t.type === 'expense').reduce((s, t) => s + +t.amount, 0); return i - e; };
@@ -2040,14 +2243,14 @@
                     toast('ลบกระเป๋าแล้ว');
                 } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
-            return <div className="pg">
-                <div className="phd"><div className="ptl"><i className="fa-solid fa-wallet"></i>กระเป๋าเงิน</div><button className="bp" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditW(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่มกระเป๋า</button></div>
-                {wallets.length === 0 ? <div className="emp"><i className="fa-solid fa-wallet"></i><p>ยังไม่มีกระเป๋าเงิน</p></div>
+            return <div className="pg nexo-page">
+                <div className="phd nexo-page-header"><div className="ptl nexo-page-title"><i className="fa-solid fa-wallet"></i>กระเป๋าเงิน</div><button className="bp nexo-btn-primary" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditW(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่มกระเป๋า</button></div>
+                {wallets.length === 0 ? <div className="emp nexo-empty-state"><i className="fa-solid fa-wallet"></i><p>ยังไม่มีกระเป๋าเงิน</p></div>
                     : wallets.map(w => {
-                        const b = gb(w.id); return <div key={w.id} className="wr">
-                            <div className="wic" style={{ background: `${w.color}20` }}><i className={`fa-solid ${w.icon}`} style={{ color: w.color }}></i></div>
-                            <div style={{ flex: 1 }}><div style={{ fontWeight: 700, fontSize: 13.5 }}>{w.name}</div><div className="wb" style={{ color: b >= 0 ? 'var(--inc)' : 'var(--exp)' }}>{b < 0 ? '-' : ''}฿{ff(Math.abs(b))}</div></div>
-                            <div style={{ display: 'flex', gap: 6 }}><button className="bs" onClick={() => { setEditW(w); setShowM(true); }}><i className="fa-solid fa-pen"></i></button><button className="bs bsd" onClick={() => setConf(w.id)}><i className="fa-solid fa-trash"></i></button></div>
+                        const b = gb(w.id); return <div key={w.id} className="wr nexo-wallet-row">
+                            <div className="wic nexo-wallet-icon" style={{ background: `${w.color}20` }}><i className={`fa-solid ${w.icon}`} style={{ color: w.color }}></i></div>
+                            <div style={{ flex: 1 }}><div style={{ fontWeight: 700, fontSize: 13.5 }}>{w.name}</div><div className="wb nexo-wallet-balance" style={{ color: b >= 0 ? 'var(--inc)' : 'var(--exp)' }}>{b < 0 ? '-' : ''}฿{ff(Math.abs(b))}</div></div>
+                            <div style={{ display: 'flex', gap: 6 }}><button className="bs nexo-btn-small" onClick={() => { setEditW(w); setShowM(true); }}><i className="fa-solid fa-pen"></i></button><button className="bs bsd nexo-btn-small nexo-btn-small-danger" onClick={() => setConf(w.id)}><i className="fa-solid fa-trash"></i></button></div>
                         </div>;
                     })}
                 {showM && <WM onClose={() => { setShowM(false); setEditW(null); }} onSave={sv} editW={editW} />}
@@ -2055,7 +2258,7 @@
             </div>;
         }
 
-        /* ════ CATS PAGE ════ */
+        /* ════ nexo CATS PAGE ════ */
         function Cats({ ec, setEc, ic, setIc, toast }) {
             const [tab, setTab] = useState('expense'); const [showM, setShowM] = useState(false); const [editC, setEditC] = useState(null); const [conf, setConf] = useState(null);
             const cats = tab === 'expense' ? ec : ic; const setCats = tab === 'expense' ? setEc : setIc;
@@ -2079,15 +2282,15 @@
                     toast('ลบหมวดหมู่แล้ว');
                 } catch (e) { toast('เกิดข้อผิดพลาด: ' + e.message, true); }
             };
-            return <div className="pg">
-                <div className="phd"><div className="ptl"><i className="fa-solid fa-tags"></i>หมวดหมู่</div><button className="bp" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditC(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่ม</button></div>
-                <div className="ttog" style={{ marginBottom: 15 }}><button className={`tb exp${tab === 'expense' ? ' on' : ''}`} onClick={() => setTab('expense')}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</button><button className={`tb inc${tab === 'income' ? ' on' : ''}`} onClick={() => setTab('income')}><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</button></div>
-                <div className="c3" style={{ padding: '3px 15px' }}>
-                    {cats.length === 0 ? <div className="emp"><i className="fa-solid fa-tags"></i><p>ยังไม่มีหมวดหมู่</p></div>
-                        : cats.map(c => <div key={c.id} className="seti">
-                            <div className="seic" style={{ background: `${c.color}20` }}><i className={`fa-solid ${c.icon}`} style={{ color: c.color }}></i></div>
-                            <div style={{ flex: 1 }}><div className="slbl">{c.name}</div></div>
-                            <div className="sact"><button className="bs" onClick={() => { setEditC(c); setShowM(true); }}><i className="fa-solid fa-pen"></i></button><button className="bs bsd" onClick={() => setConf(c.id)}><i className="fa-solid fa-trash"></i></button></div>
+            return <div className="pg nexo-page">
+                <div className="phd nexo-page-header"><div className="ptl nexo-page-title"><i className="fa-solid fa-tags"></i>หมวดหมู่</div><button className="bp nexo-btn-primary" style={{ padding: '8px 15px', fontSize: 12 }} onClick={() => { setEditC(null); setShowM(true); }}><i className="fa-solid fa-plus"></i>เพิ่ม</button></div>
+                <div className="ttog nexo-type-toggle" style={{ marginBottom: 15 }}><button className={`tb nexo-toggle-btn exp${tab === 'expense' ? ' on active' : ''}`} onClick={() => setTab('expense')}><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</button><button className={`tb nexo-toggle-btn inc${tab === 'income' ? ' on active' : ''}`} onClick={() => setTab('income')}><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</button></div>
+                <div className="c3 nexo-card-3d" style={{ padding: '3px 15px' }}>
+                    {cats.length === 0 ? <div className="emp nexo-empty-state"><i className="fa-solid fa-tags"></i><p>ยังไม่มีหมวดหมู่</p></div>
+                        : cats.map(c => <div key={c.id} className="seti nexo-setting-item">
+                            <div className="seic nexo-setting-icon" style={{ background: `${c.color}20` }}><i className={`fa-solid ${c.icon}`} style={{ color: c.color }}></i></div>
+                            <div style={{ flex: 1 }}><div className="slbl nexo-setting-label">{c.name}</div></div>
+                            <div className="sact nexo-setting-actions"><button className="bs nexo-btn-small" onClick={() => { setEditC(c); setShowM(true); }}><i className="fa-solid fa-pen"></i></button><button className="bs bsd nexo-btn-small nexo-btn-small-danger" onClick={() => setConf(c.id)}><i className="fa-solid fa-trash"></i></button></div>
                         </div>)}
                 </div>
                 {showM && <CM onClose={() => { setShowM(false); setEditC(null); }} onSave={sv} editC={editC} type={tab} />}
@@ -2095,55 +2298,55 @@
             </div>;
         }
 
-        /* ════ THEME PAGE ════ */
+        /* ════ nexo THEME PAGE ════ */
         function Theme({ isDark, setIsDark, acc, setAcc, onSaveSettings }) {
             const [ch, setCh] = useState(acc);
             const applyC = () => { if (/^#[0-9a-fA-F]{6}$/.test(ch.trim())) { setAcc(ch.trim()); onSaveSettings({ isDark, acc: ch.trim() }); } };
             const toggleDark = () => { const nd = !isDark; setIsDark(nd); onSaveSettings({ isDark: nd, acc }); };
             const selectAcc = (c) => { setAcc(c); onSaveSettings({ isDark, acc: c }); };
-            return <div className="pg">
-                <div className="phd"><div className="ptl"><i className="fa-solid fa-palette"></i>ธีม & สี</div></div>
-                <div className="c3" style={{ padding: '3px 20px', marginBottom: 11 }}>
-                    <div className="trow">
-                        <div><div className="trlbl"><i className="fa-solid fa-circle-half-stroke" style={{ marginRight: 6, color: 'var(--acc)' }}></i>โหมดสี</div><div className="trsub">{isDark ? 'โหมดมืด (Dark)' : 'โหมดสว่าง (Light)'}</div></div>
+            return <div className="pg nexo-page">
+                <div className="phd nexo-page-header"><div className="ptl nexo-page-title"><i className="fa-solid fa-palette"></i>ธีม & สี</div></div>
+                <div className="c3 nexo-card-3d" style={{ padding: '3px 20px', marginBottom: 11 }}>
+                    <div className="trow nexo-theme-row">
+                        <div><div className="trlbl nexo-theme-label"><i className="fa-solid fa-circle-half-stroke" style={{ marginRight: 6, color: 'var(--acc)' }}></i>โหมดสี</div><div className="trsub nexo-theme-sub">{isDark ? 'โหมดมืด (Dark)' : 'โหมดสว่าง (Light)'}</div></div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                             <i className="fa-solid fa-sun" style={{ color: 'var(--gld)', fontSize: 15 }}></i>
-                            <div className={`sw${isDark ? ' on' : ''}`} onClick={toggleDark}></div>
+                            <div className={`sw nexo-switch${isDark ? ' on active' : ''}`} onClick={toggleDark}></div>
                             <i className="fa-solid fa-moon" style={{ color: 'var(--acc)', fontSize: 15 }}></i>
                         </div>
                     </div>
                 </div>
-                <div className="c3" style={{ padding: '17px 19px', marginBottom: 11 }}>
+                <div className="c3 nexo-card-3d" style={{ padding: '17px 19px', marginBottom: 11 }}>
                     <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 13 }}><i className="fa-solid fa-swatchbook" style={{ marginRight: 6, color: 'var(--acc)' }}></i>สีธีมหลัก (Preset)</div>
-                    <div className="asw">{ACCS.map(p => <div key={p.h} className={`as${acc === p.h ? ' on' : ''}`} style={{ background: p.h }} onClick={() => selectAcc(p.h)} title={p.l}></div>)}</div>
+                    <div className="asw nexo-accent-swatch">{ACCS.map(p => <div key={p.h} className={`as nexo-accent-swatch-item${acc === p.h ? ' on active' : ''}`} style={{ background: p.h }} onClick={() => selectAcc(p.h)} title={p.l}></div>)}</div>
                     <div style={{ marginTop: 15 }}>
                         <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--tx2)', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '.07em' }}>กำหนดสีเอง (HEX)</div>
                         <div style={{ display: 'flex', gap: 8 }}>
                             <div style={{ position: 'relative', flex: 1 }}>
                                 <div style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', width: 17, height: 17, borderRadius: 5, background: ch, border: '2px solid var(--bd1)' }}></div>
-                                <input value={ch} onChange={e => setCh(e.target.value)} placeholder="#6c63ff" style={{ paddingLeft: 36, fontFamily: 'JetBrains Mono,monospace', fontSize: 13 }} />
+                                <input className="nexo-input" value={ch} onChange={e => setCh(e.target.value)} placeholder="#6c63ff" style={{ paddingLeft: 36, fontFamily: 'JetBrains Mono,monospace', fontSize: 13 }} />
                             </div>
-                            <button className="bp" style={{ padding: '10px 14px', fontSize: 12, flexShrink: 0 }} onClick={applyC}>ใช้สีนี้</button>
+                            <button className="bp nexo-btn-primary" style={{ padding: '10px 14px', fontSize: 12, flexShrink: 0 }} onClick={applyC}>ใช้สีนี้</button>
                         </div>
                     </div>
                 </div>
-                <div className="c3" style={{ padding: '17px 19px' }}>
+                <div className="c3 nexo-card-3d" style={{ padding: '17px 19px' }}>
                     <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 13 }}><i className="fa-solid fa-eye" style={{ marginRight: 6, color: 'var(--acc)' }}></i>ตัวอย่าง UI</div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                        <button className="bp" style={{ width: '100%' }}><i className="fa-solid fa-plus"></i>ปุ่มหลัก (Primary)</button>
-                        <div className="hero" style={{ padding: '15px 17px' }}>
-                            <div className="hl">ยอดคงเหลือ</div><div className="ha">฿12,345.67</div><div className="hs">ตัวอย่าง Hero Card</div>
+                        <button className="bp nexo-btn-primary" style={{ width: '100%' }}><i className="fa-solid fa-plus"></i>ปุ่มหลัก (Primary)</button>
+                        <div className="hero nexo-hero" style={{ padding: '15px 17px' }}>
+                            <div className="hl nexo-hero-label">ยอดคงเหลือ</div><div className="ha nexo-hero-amount">฿12,345.67</div><div className="hs nexo-hero-sub">ตัวอย่าง Hero Card</div>
                         </div>
-                        <div className="sg" style={{ marginBottom: 0 }}>
-                            <div className="sc sci"><div className="slb"><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</div><div className="sv" style={{ color: 'var(--inc)', fontSize: 16 }}>฿5,000</div></div>
-                            <div className="sc sce"><div className="slb"><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</div><div className="sv" style={{ color: 'var(--exp)', fontSize: 16 }}>฿2,000</div></div>
+                        <div className="sg nexo-summary-grid" style={{ marginBottom: 0 }}>
+                            <div className="sc sci nexo-summary-card nexo-summary-card-income"><div className="slb nexo-summary-label"><i className="fa-solid fa-arrow-trend-up"></i>รายรับ</div><div className="sv nexo-summary-value" style={{ color: 'var(--inc)', fontSize: 16 }}>฿5,000</div></div>
+                            <div className="sc sce nexo-summary-card nexo-summary-card-expense"><div className="slb nexo-summary-label"><i className="fa-solid fa-arrow-trend-down"></i>รายจ่าย</div><div className="sv nexo-summary-value" style={{ color: 'var(--exp)', fontSize: 16 }}>฿2,000</div></div>
                         </div>
                     </div>
                 </div>
             </div>;
         }
 
-        /* ════ APP ════ */
+        /* ════ nexo APP ════ */
         function App() {
             const [pg, setPg] = useState('home');
             const [txs, setTxs] = useState([]);
@@ -2259,44 +2462,44 @@
                 }
             };
 
-            return <div id="app">
+            return <div id="app" className="nexo-protected">
                 {/* SIDEBAR */}
-                <nav id="sb">
-                    <div className="sl">
-                        <div className="orb"><i className="fa-solid fa-money-bill-trend-up"></i></div>
-                        <div><div className="lt">MoneyFlow</div><div className="ls">nexo cloud</div></div>
+                <nav id="sb" className="nexo-sidebar">
+                    <div className="sl nexo-sidebar-logo">
+                        <div className="orb nexo-orb"><i className="fa-solid fa-money-bill-trend-up"></i></div>
+                        <div><div className="lt nexo-logo-title">MoneyFlow</div><div className="ls nexo-logo-sub">nexo cloud</div></div>
                     </div>
-                    <button className="sadd" onClick={() => { setEditTx(null); setShowTxM(true); }}>
+                    <button className="sadd nexo-sidebar-add" onClick={() => { setEditTx(null); setShowTxM(true); }}>
                         <i className="fa-solid fa-circle-plus" style={{ fontSize: 15 }}></i>เพิ่มรายการใหม่
                     </button>
-                    <div className="ssec">เมนูหลัก</div>
-                    {SNV.map(n => <button key={n.id} className={`si${pg === n.id ? ' on' : ''}`} onClick={() => setPg(n.id)}><i className={`fa-solid ${n.i}`}></i>{n.l}</button>)}
+                    <div className="ssec nexo-sidebar-section">เมนูหลัก</div>
+                    {SNV.map(n => <button key={n.id} className={`si nexo-sidebar-item${pg === n.id ? ' on active' : ''}`} onClick={() => setPg(n.id)}><i className={`fa-solid ${n.i}`}></i>{n.l}</button>)}
                 </nav>
 
                 {/* MAIN */}
-                <div id="mw">
-                    <div className="mhdr">
-                        <div className="mhl">
-                            <div className="orb" style={{ width: 30, height: 30, borderRadius: 9, fontSize: 13 }}><i className="fa-solid fa-money-bill-trend-up"></i></div>
+                <div id="mw" className="nexo-main-wrapper">
+                    <div className="mhdr nexo-mobile-header">
+                        <div className="mhl nexo-mobile-header-left">
+                            <div className="orb nexo-orb" style={{ width: 30, height: 30, borderRadius: 9, fontSize: 13 }}><i className="fa-solid fa-money-bill-trend-up"></i></div>
                             MoneyFlow
                         </div>
-                        <div className="mhr">
-                            <button className="bs" onClick={() => setPg('wallets')} title="กระเป๋าเงิน"><i className="fa-solid fa-wallet"></i></button>
-                            <button className="bs" onClick={() => setPg('theme')} title="ธีม"><i className="fa-solid fa-palette"></i></button>
-                            <button className="bp" style={{ padding: '7px 13px', fontSize: 12 }} onClick={() => { setEditTx(null); setShowTxM(true); }}><i className="fa-solid fa-plus"></i>เพิ่ม</button>
+                        <div className="mhr nexo-mobile-header-right">
+                            <button className="bs nexo-btn-small" onClick={() => setPg('wallets')} title="กระเป๋าเงิน"><i className="fa-solid fa-wallet"></i></button>
+                            <button className="bs nexo-btn-small" onClick={() => setPg('theme')} title="ธีม"><i className="fa-solid fa-palette"></i></button>
+                            <button className="bp nexo-btn-primary" style={{ padding: '7px 13px', fontSize: 12 }} onClick={() => { setEditTx(null); setShowTxM(true); }}><i className="fa-solid fa-plus"></i>เพิ่ม</button>
                         </div>
                     </div>
                     {rp()}
                 </div>
 
                 {/* BOTTOM NAV */}
-                <nav id="bn">
+                <nav id="bn" className="nexo-bottom-nav">
                     {BNV.map(n => n.fab
-                        ? <div key="fab" className="fabw" onClick={() => { setEditTx(null); setShowTxM(true); }}>
-                            <div className="fabo"><i className="fa-solid fa-plus"></i></div>
+                        ? <div key="fab" className="fabw nexo-fab-wrapper" onClick={() => { setEditTx(null); setShowTxM(true); }}>
+                            <div className="fabo nexo-fab"><i className="fa-solid fa-plus"></i></div>
                             <span style={{ fontSize: 10, color: 'var(--tx2)', fontWeight: 600 }}>เพิ่ม</span>
                         </div>
-                        : <button key={n.id} className={`bni${pg === n.id ? ' on' : ''}`} onClick={() => setPg(n.id)}>
+                        : <button key={n.id} className={`bni nexo-bottom-nav-item${pg === n.id ? ' on active' : ''}`} onClick={() => setPg(n.id)}>
                             <i className={`fa-solid ${n.i}`}></i>{n.l}
                         </button>
                     )}
