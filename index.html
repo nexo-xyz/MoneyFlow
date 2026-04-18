@@ -1603,7 +1603,7 @@
            ═══════════════════════════════════════════════════════════ */
 
         // ใส่ URL ของ Google Apps Script Web App ที่นี่
-        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbz6a06SDkzOxhUDqEBdSxSbSSoQTsqSCfSD7mK3Lm4cC0VQN1WmcvUZfweYZZc2LTn5/exec';
+        const NEXO_API_URL = 'https://script.google.com/macros/s/AKfycbwoUV0k5OI4jEnBSPeMwXoz_MMv5PnYqdMeK64WsZ9uWdp8t_vXetEJIRrYxUHW-12B/exec';
 
         // nexo API Helper
         const nexoAPI = {
@@ -1691,27 +1691,18 @@
         const fd = d => {
             if (!d) return '';
             try {
-                let s = String(d).trim();
+                // ลบ apostrophe นำหน้า (กรณี Sheets บันทึก '2026-04-18)
+                let s = String(d).trim().replace(/^'+/, '');
+                // ถ้าเป็น ISO string ให้ตัดเอาแค่ YYYY-MM-DD
                 if (s.includes('T')) s = s.split('T')[0];
-                if (s.startsWith('1899') || s.startsWith('1900')) return '';
                 const parts = s.split('-');
-                if (parts.length < 3) return d;
+                if (parts.length < 3) return s;
                 const y = parseInt(parts[0], 10);
                 const m = parseInt(parts[1], 10);
                 const dd = parseInt(parts[2], 10);
-                if (isNaN(y) || isNaN(m) || isNaN(dd) || m < 1 || m > 12) return d;
+                if (isNaN(y) || isNaN(m) || isNaN(dd) || m < 1 || m > 12) return s;
                 return dd + ' ' + TM[m - 1] + ' ' + (y + 543);
             } catch (e) { return String(d); }
-        };
-        const ft = t => {
-            if (!t) return '';
-            try {
-                let s = String(t).trim();
-                // ถ้าเป็น ISO string เช่น 1899-12-30T10:14:56.000Z
-                if (s.includes('T')) { s = s.split('T')[1] || ''; }
-                // ตัดเอาแค่ HH:MM
-                return s.substring(0, 5);
-            } catch (e) { return ''; }
         };
         const fm = n => { if (n == null) return '0'; const a = Math.abs(n); if (a >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'; if (a >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'; return Number(n).toLocaleString('th-TH', { maximumFractionDigits: 2 }); };
         const ff = n => Number(n || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1726,7 +1717,7 @@
                 '6m': () => c.setMonth(c.getMonth() - 6), '9m': () => c.setMonth(c.getMonth() - 9),
                 '1y': () => c.setFullYear(c.getFullYear() - 1),
             }[p] || (() => { }))();
-            return list.filter(t => { const ds = String(t.date || '').split('T')[0]; const ts = ft(t.time) || '00:00'; try { return new Date(ds + 'T' + ts) >= c; } catch (e) { return false; } });
+            return list.filter(t => new Date(t.date + 'T' + (t.time || '00:00')) >= c);
         };
 
         /* ════ DEFAULTS ════ */
@@ -1896,7 +1887,7 @@
             const totBal = wallets.reduce((s, w) => { const i = txs.filter(t => t.walletId === w.id && t.type === 'income').reduce((a, t) => a + +t.amount, 0); const e = txs.filter(t => t.walletId === w.id && t.type === 'expense').reduce((a, t) => a + +t.amount, 0); return s + i - e; }, 0);
             const gc = tx => (tx.type === 'income' ? ic : ec).find(c => c.id === tx.catId);
             const gw = id => wallets.find(w => w.id === id);
-            const rec = [...filt].sort((a, b) => { const da = (String(a.date || '').split('T')[0]) + ' ' + (ft(a.time) || '00:00'); const db = (String(b.date || '').split('T')[0]) + ' ' + (ft(b.time) || '00:00'); return db.localeCompare(da); }).slice(0, 30);
+            const rec = [...filt].sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`)).slice(0, 30);
             return <div className="pg">
                 <div className="hero">
                     <div className="hl"><i className="fa-solid fa-layer-group" style={{ marginRight: 6 }}></i>ยอดคงเหลือรวมทุกกระเป๋า</div>
@@ -1966,7 +1957,7 @@
             const filt = useMemo(() => {
                 let l = [...txs]; if (ft !== 'all') l = l.filter(t => t.type === ft);
                 if (srch.trim()) { const q = srch.toLowerCase(); l = l.filter(t => { const c = gc(t); return (c?.name || '').toLowerCase().includes(q) || (t.note || '').toLowerCase().includes(q); }); }
-                return l.sort((a, b) => { const da = (String(a.date || '').split('T')[0]) + ' ' + (ft(a.time) || '00:00'); const db = (String(b.date || '').split('T')[0]) + ' ' + (ft(b.time) || '00:00'); return db.localeCompare(da); });
+                return l.sort((a, b) => (`${b.date} ${b.time || '00:00'}`).localeCompare(`${a.date} ${a.time || '00:00'}`));
             }, [txs, ft, srch, ec, ic]);
             const sv = async (tx) => {
                 try {
@@ -1997,7 +1988,7 @@
                             const c = gc(tx); const w = gw(tx.walletId); return <div key={tx.id} className="txr" onClick={() => setView(tx)}>
                                 <div className="txic" style={{ background: `${c?.color || '#888'}20`, color: c?.color || '#888' }}><i className={`fa-solid ${c?.icon || 'fa-circle-dot'}`}></i></div>
                                 <div className="txin"><div className="txca">{c?.name || 'ไม่ระบุ'}</div><div className="txme">{w && <><i className={`fa-solid ${w.icon}`} style={{ fontSize: 9, marginRight: 3 }}></i>{w.name}</>}{tx.note && <span style={{ marginLeft: 5 }}>· {tx.note}</span>}</div></div>
-                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)} {ft(tx.time)}</div></div>
+                                <div className="txrt"><div className="txam" style={{ color: tx.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{tx.type === 'income' ? '+' : '-'}฿{fm(tx.amount)}</div><div className="txdt">{fd(tx.date)} {tx.time}</div></div>
                             </div>;
                         })}
                 </div>
@@ -2011,7 +2002,7 @@
                                     <div className="jb" style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-1px', color: view.type === 'income' ? 'var(--inc)' : 'var(--exp)' }}>{view.type === 'income' ? '+' : '-'}฿{ff(view.amount)}</div>
                                 </div>
                                 <div className="c3" style={{ padding: '3px 15px', marginBottom: 15 }}>
-                                    {[{ i: 'fa-calendar', l: 'วันที่', v: fd(view.date) }, { i: 'fa-clock', l: 'เวลา', v: ft(view.time) }, { i: 'fa-wallet', l: 'กระเป๋า', v: w?.name }, { i: 'fa-note-sticky', l: 'โน๊ต', v: view.note || '-' }].filter(r => r.v).map(r => <div key={r.l} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 0', borderBottom: '1px solid var(--bd0)' }}><i className={`fa-solid ${r.i}`} style={{ color: 'var(--tx2)', width: 15, textAlign: 'center' }}></i><span style={{ fontSize: 11, color: 'var(--tx2)', minWidth: 42 }}>{r.l}</span><span style={{ fontSize: 13, fontWeight: 600 }}>{r.v}</span></div>)}
+                                    {[{ i: 'fa-calendar', l: 'วันที่', v: fd(view.date) }, { i: 'fa-clock', l: 'เวลา', v: view.time }, { i: 'fa-wallet', l: 'กระเป๋า', v: w?.name }, { i: 'fa-note-sticky', l: 'โน๊ต', v: view.note || '-' }].filter(r => r.v).map(r => <div key={r.l} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 0', borderBottom: '1px solid var(--bd0)' }}><i className={`fa-solid ${r.i}`} style={{ color: 'var(--tx2)', width: 15, textAlign: 'center' }}></i><span style={{ fontSize: 11, color: 'var(--tx2)', minWidth: 42 }}>{r.l}</span><span style={{ fontSize: 13, fontWeight: 600 }}>{r.v}</span></div>)}
                                 </div>
                                 <div style={{ display: 'flex', gap: 8 }}><button className="bg" style={{ flex: 1 }} onClick={() => setShowEd(true)}><i className="fa-solid fa-pen"></i>แก้ไข</button><button className="bd" style={{ flex: 1 }} onClick={() => setConf(view.id)}><i className="fa-solid fa-trash"></i>ลบ</button><button className="bg" style={{ flex: 1 }} onClick={() => setView(null)}>ปิด</button></div>
                             </div></div>
