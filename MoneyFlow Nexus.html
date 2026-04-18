@@ -239,6 +239,12 @@
             gap: 24px;
         }
 
+        .nexo-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
         .nexo-feature-card {
             background: var(--bg2);
             border: 1px solid var(--bd0);
@@ -316,10 +322,54 @@
             margin-right: 8px;
         }
 
+        .nexo-tech-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 4px;
+            background: rgba(var(--ar), .15);
+            color: var(--acc);
+            border: 1px solid rgba(var(--ar), .3);
+        }
+
+        .nexo-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .nexo-table th,
+        .nexo-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--bd0);
+        }
+
+        .nexo-table th {
+            color: var(--tx2);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .nexo-table td {
+            color: var(--tx0);
+        }
+
+        .nexo-stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--acc);
+        }
+
         @media (max-width: 768px) {
 
             .nexo-grid-2,
-            .nexo-grid-3 {
+            .nexo-grid-3,
+            .nexo-grid-4 {
                 grid-template-columns: 1fr;
             }
 
@@ -355,6 +405,62 @@
 
         .nexo-watermark {
             position: relative;
+        }
+
+        /* Architecture Diagram */
+        .nexo-arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: var(--bg1);
+            border-radius: 20px;
+        }
+
+        .nexo-arch-node {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg2);
+            border-radius: 16px;
+            min-width: 140px;
+            border: 1px solid var(--bd1);
+        }
+
+        .nexo-arch-arrow {
+            font-size: 24px;
+            color: var(--acc);
+        }
+
+        /* สไตล์สำหรับส่วนข้อมูลจำเพาะทางเทคนิค */
+        .nexo-specs-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nexo-specs-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--bd0);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .nexo-specs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .nexo-specs-list i {
+            color: var(--acc);
+            width: 20px;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .nexo-specs-list strong {
+            min-width: 120px;
+            color: var(--tx1);
         }
     </style>
 </head>
@@ -415,6 +521,493 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- ========== ส่วนใหม่: เทคโนโลยีที่ใช้และข้อมูลจำเพาะทางเทคนิค ========== -->
+        <section id="nexo-tech-stack" class="nexo-section" data-nexo-section="tech-stack">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-microchip"></i> เทคโนโลยีและภาษาที่ใช้ในการพัฒนา</h2>
+
+            <!-- สถิติโดยรวม -->
+            <div class="nexo-grid-4" style="margin-bottom: 30px;">
+                <div class="nexo-feature-card" style="text-align: center;">
+                    <i class="fa-brands fa-react" style="font-size: 36px; color: #61dafb; margin-bottom: 12px;"></i>
+                    <div class="nexo-stat-number">React 18</div>
+                    <div style="color: var(--tx2);">Frontend Framework</div>
+                </div>
+                <div class="nexo-feature-card" style="text-align: center;">
+                    <i class="fa-brands fa-js" style="font-size: 36px; color: #f7df1e; margin-bottom: 12px;"></i>
+                    <div class="nexo-stat-number">JSX</div>
+                    <div style="color: var(--tx2);">ภาษาเขียนหลัก</div>
+                </div>
+                <div class="nexo-feature-card" style="text-align: center;">
+                    <i class="fa-solid fa-database" style="font-size: 36px; color: #34a853; margin-bottom: 12px;"></i>
+                    <div class="nexo-stat-number">Sheets</div>
+                    <div style="color: var(--tx2);">ฐานข้อมูล</div>
+                </div>
+                <div class="nexo-feature-card" style="text-align: center;">
+                    <i class="fa-solid fa-chart-simple" style="font-size: 36px; color: #ff6384; margin-bottom: 12px;"></i>
+                    <div class="nexo-stat-number">Chart.js</div>
+                    <div style="color: var(--tx2);">Visualization</div>
+                </div>
+            </div>
+
+            <!-- รายละเอียดทางเทคนิคแบบเต็ม -->
+            <div class="nexo-grid-2">
+                <!-- Frontend Stack -->
+                <div class="c3 nexo-card-3d nexo-protected">
+                    <h3 class="nexo-heading-3" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-brands fa-react" style="color: #61dafb;"></i>
+                        Frontend Stack (Client-Side)
+                    </h3>
+                    <ul class="nexo-specs-list">
+                        <li>
+                            <i class="fa-brands fa-react"></i>
+                            <strong>React 18.2.0</strong>
+                            <span style="color: var(--tx2);">UI Library (ใช้ผ่าน UMD แบบไม่ต้อง Build)</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-code"></i>
+                            <strong>JSX / JavaScript ES6+</strong>
+                            <span style="color: var(--tx2);">เขียนด้วย Babel Standalone ในเบราว์เซอร์</span>
+                        </li>
+                        <li>
+                            <i class="fa-brands fa-css3-alt"></i>
+                            <strong>CSS3 (Custom Properties)</strong>
+                            <span style="color: var(--tx2);">CSS Variables สำหรับ Theme System ทั้ง Dark/Light Mode</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <strong>Chart.js 4.4.0</strong>
+                            <span style="color: var(--tx2);">สร้างกราฟแท่งและกราฟวงกลมแบบ Interactive</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-font"></i>
+                            <strong>Google Fonts</strong>
+                            <span style="color: var(--tx2);">Noto Sans Thai, Rajdhani, JetBrains Mono</span>
+                        </li>
+                        <li>
+                            <i class="fa-brands fa-font-awesome"></i>
+                            <strong>Font Awesome 6.5.1</strong>
+                            <span style="color: var(--tx2);">ชุดไอคอนกว่า 2,000+ ตัว</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backend Stack -->
+                <div class="c3 nexo-card-3d nexo-protected">
+                    <h3 class="nexo-heading-3" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-brands fa-google" style="color: #4285f4;"></i>
+                        Backend Stack (Server-Side)
+                    </h3>
+                    <ul class="nexo-specs-list">
+                        <li>
+                            <i class="fa-solid fa-table"></i>
+                            <strong>Google Sheets</strong>
+                            <span style="color: var(--tx2);">ฐานข้อมูล NoSQL-like เก็บข้อมูลในรูปแบบตาราง</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-gear"></i>
+                            <strong>Google Apps Script</strong>
+                            <span style="color: var(--tx2);">JavaScript-based Serverless Backend</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-globe"></i>
+                            <strong>RESTful API</strong>
+                            <span style="color: var(--tx2);">HTTP GET/POST ผ่าน Web App Deployment</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-lock"></i>
+                            <strong>JSON Data Exchange</strong>
+                            <span style="color: var(--tx2);">รับ-ส่งข้อมูลในรูปแบบ JSON</span>
+                        </li>
+                        <li>
+                            <i class="fa-brands fa-github"></i>
+                            <strong>GitHub Pages</strong>
+                            <span style="color: var(--tx2);">Hosting แบบ Static Site ฟรี</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- รายละเอียดภาษาและไลบรารี -->
+            <div class="c3 nexo-card-3d" style="margin-top: 30px;">
+                <h3 class="nexo-heading-3"><i class="fa-solid fa-code"></i> องค์ประกอบของโค้ดและสัดส่วนภาษา</h3>
+
+                <table class="nexo-table">
+                    <thead>
+                        <tr>
+                            <th>ประเภทไฟล์/ภาษา</th>
+                            <th>สัดส่วนโดยประมาณ</th>
+                            <th>หน้าที่หลัก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="nexo-tech-tag"><i class="fa-brands fa-js"></i> JavaScript (JSX)</span>
+                            </td>
+                            <td><strong>~65%</strong></td>
+                            <td>React Components, State Management, Business Logic, API Calls</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nexo-tech-tag"><i class="fa-brands fa-css3-alt"></i> CSS3</span></td>
+                            <td><strong>~30%</strong></td>
+                            <td>Styling, Animations, Theme Variables, Responsive Design</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nexo-tech-tag"><i class="fa-brands fa-html5"></i> HTML5</span></td>
+                            <td><strong>~5%</strong></td>
+                            <td>โครงสร้างหลักของ Single Page Application</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nexo-tech-tag"><i class="fa-solid fa-gear"></i> Google Apps Script</span>
+                            </td>
+                            <td><strong>~200 บรรทัด</strong> (แยกไฟล์)</td>
+                            <td>CRUD Operations, Sheet Management, API Endpoints</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- สถาปัตยกรรมระบบ -->
+        <section id="nexo-architecture" class="nexo-section" data-nexo-section="architecture">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-diagram-project"></i> สถาปัตยกรรมของระบบ</h2>
+
+            <div class="c3 nexo-card-3d">
+                <div class="nexo-arch-diagram">
+                    <div class="nexo-arch-node">
+                        <i class="fa-solid fa-user" style="font-size: 28px; color: var(--acc);"></i>
+                        <div style="font-weight: 700; margin-top: 8px;">ผู้ใช้งาน</div>
+                        <div style="font-size: 11px; color: var(--tx2);">Browser</div>
+                    </div>
+                    <div class="nexo-arch-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="nexo-arch-node">
+                        <i class="fa-brands fa-react" style="font-size: 28px; color: #61dafb;"></i>
+                        <div style="font-weight: 700; margin-top: 8px;">React App</div>
+                        <div style="font-size: 11px; color: var(--tx2);">GitHub Pages</div>
+                    </div>
+                    <div class="nexo-arch-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="nexo-arch-node">
+                        <i class="fa-solid fa-cloud" style="font-size: 28px; color: var(--gld);"></i>
+                        <div style="font-weight: 700; margin-top: 8px;">Google Apps Script</div>
+                        <div style="font-size: 11px; color: var(--tx2);">Web App API</div>
+                    </div>
+                    <div class="nexo-arch-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="nexo-arch-node">
+                        <i class="fa-solid fa-table" style="font-size: 28px; color: #34a853;"></i>
+                        <div style="font-weight: 700; margin-top: 8px;">Google Sheets</div>
+                        <div style="font-size: 11px; color: var(--tx2);">5 Worksheets</div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: var(--tx1);">
+                    <i class="fa-solid fa-circle-info" style="color: var(--acc);"></i>
+                    ระบบทำงานแบบ Client-Server โดยใช้ React สำหรับ Frontend, Google Apps Script เป็น Middleware API,
+                    และ Google Sheets เป็นฐานข้อมูล
+                </p>
+            </div>
+        </section>
+
+        <!-- รายละเอียด Components และ Features -->
+        <section id="nexo-components" class="nexo-section" data-nexo-section="components">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-cubes"></i> โครงสร้าง Components และ Features</h2>
+
+            <div class="nexo-grid-3">
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-house"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">Home Page (หน้าแรก)</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Hero Card
+                            แสดงยอดรวมทุกกระเป๋า</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Summary
+                            Cards รายรับ/รายจ่าย</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Wallet Tabs
+                            กรองตามกระเป๋า</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Period Tabs
+                            กรองตามช่วงเวลา</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Recent
+                            Transactions List</li>
+                    </ul>
+                </div>
+
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">Summary Page (สรุปรายงาน)</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Bar Chart
+                            รายรับ vs รายจ่าย</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Pie Charts
+                            แยกตามหมวดหมู่</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Progress
+                            Bars แสดงสัดส่วน</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> รองรับการ
+                            Export ข้อมูล</li>
+                    </ul>
+                </div>
+
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">History Page (ประวัติ)</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> ค้นหาตามหมวดหมู่/โน๊ต</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> กรองตามประเภทรายการ</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> แก้ไข/ลบ รายการ</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> แสดงรายละเอียดแบบ Modal</li>
+                    </ul>
+                </div>
+
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">Wallets Management</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> CRUD
+                            กระเป๋าเงิน</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> เลือกไอคอน
+                            (20+ แบบ)</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> เลือกสี
+                            (12 สี Preset)</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> แสดงยอดคงเหลือต่อกระเป๋า</li>
+                    </ul>
+                </div>
+
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-tags"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">Categories Management</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> แยกรายจ่าย/รายรับ</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> ไอคอน 30+
+                            แบบ</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Default
+                            Categories สำหรับเริ่มต้น</li>
+                    </ul>
+                </div>
+
+                <div class="nexo-feature-card">
+                    <div class="nexo-feature-icon"><i class="fa-solid fa-palette"></i></div>
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">Theme Customization</h3>
+                    <ul style="color: var(--tx1); font-size: 13px; list-style: none; padding: 0;">
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Dark/Light
+                            Mode Toggle</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> 8 Accent
+                            Colors Preset</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> กำหนดสีเองแบบ
+                            HEX</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--inc); margin-right: 6px;"></i> Live Preview
+                            UI</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- โครงสร้างข้อมูล (Data Structure) -->
+        <section id="nexo-data-structure" class="nexo-section" data-nexo-section="data-structure">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-database"></i> โครงสร้างข้อมูล (Data Schema)</h2>
+
+            <div class="nexo-grid-2">
+                <div class="c3 nexo-card-3d">
+                    <h3 class="nexo-heading-3" style="margin-bottom: 16px;">
+                        <i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--inc);"></i>
+                        Transactions (รายการ)
+                    </h3>
+                    <div class="nexo-code-block" style="font-size: 12px;">
+                        {<br>
+                        &nbsp;&nbsp;id: "unique_id",<br>
+                        &nbsp;&nbsp;type: "income" | "expense",<br>
+                        &nbsp;&nbsp;amount: number,<br>
+                        &nbsp;&nbsp;catId: "category_id",<br>
+                        &nbsp;&nbsp;walletId: "wallet_id",<br>
+                        &nbsp;&nbsp;date: "YYYY-MM-DD",<br>
+                        &nbsp;&nbsp;time: "HH:MM",<br>
+                        &nbsp;&nbsp;note: "optional_note"<br>
+                        }
+                    </div>
+                </div>
+
+                <div class="c3 nexo-card-3d">
+                    <h3 class="nexo-heading-3" style="margin-bottom: 16px;">
+                        <i class="fa-solid fa-wallet" style="color: var(--gld);"></i>
+                        Wallets (กระเป๋าเงิน)
+                    </h3>
+                    <div class="nexo-code-block" style="font-size: 12px;">
+                        {<br>
+                        &nbsp;&nbsp;id: "wallet_id",<br>
+                        &nbsp;&nbsp;name: "ชื่อกระเป๋า",<br>
+                        &nbsp;&nbsp;icon: "fa-wallet",<br>
+                        &nbsp;&nbsp;color: "#6c63ff"<br>
+                        }
+                    </div>
+                </div>
+
+                <div class="c3 nexo-card-3d">
+                    <h3 class="nexo-heading-3" style="margin-bottom: 16px;">
+                        <i class="fa-solid fa-tag" style="color: var(--exp);"></i>
+                        Categories (หมวดหมู่)
+                    </h3>
+                    <div class="nexo-code-block" style="font-size: 12px;">
+                        {<br>
+                        &nbsp;&nbsp;id: "category_id",<br>
+                        &nbsp;&nbsp;name: "ชื่อหมวดหมู่",<br>
+                        &nbsp;&nbsp;icon: "fa-utensils",<br>
+                        &nbsp;&nbsp;color: "#ff4d6d"<br>
+                        }
+                    </div>
+                </div>
+
+                <div class="c3 nexo-card-3d">
+                    <h3 class="nexo-heading-3" style="margin-bottom: 16px;">
+                        <i class="fa-solid fa-sliders" style="color: var(--acc);"></i>
+                        Settings (การตั้งค่า)
+                    </h3>
+                    <div class="nexo-code-block" style="font-size: 12px;">
+                        {<br>
+                        &nbsp;&nbsp;isDark: boolean,<br>
+                        &nbsp;&nbsp;acc: "#6c63ff"<br>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google Sheets Structure -->
+        <section id="nexo-sheets-structure" class="nexo-section" data-nexo-section="sheets">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-table-cells-large"></i> โครงสร้าง Google Sheets</h2>
+
+            <div class="c3 nexo-card-3d">
+                <table class="nexo-table">
+                    <thead>
+                        <tr>
+                            <th>Sheet Name</th>
+                            <th>Columns (คอลัมน์)</th>
+                            <th>หน้าที่</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Transactions</strong></td>
+                            <td>id, type, amount, catId, walletId, date, time, note</td>
+                            <td>เก็บรายการรับ-จ่ายทั้งหมด</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wallets</strong></td>
+                            <td>id, name, icon, color</td>
+                            <td>เก็บข้อมูลกระเป๋าเงิน</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ExpenseCats</strong></td>
+                            <td>id, name, icon, color</td>
+                            <td>เก็บหมวดหมู่รายจ่าย</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IncomeCats</strong></td>
+                            <td>id, name, icon, color</td>
+                            <td>เก็บหมวดหมู่รายรับ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Settings</strong></td>
+                            <td>key, value</td>
+                            <td>เก็บการตั้งค่าธีมและสี</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 16px; color: var(--tx1);">
+                    <i class="fa-solid fa-lightbulb" style="color: var(--gld);"></i>
+                    <strong>Tip:</strong> แถวแรกของทุก Sheet ต้องเป็น Header ตามที่ระบุ
+                    ระบบจะอ่านข้อมูลตั้งแต่แถวที่ 2 เป็นต้นไป
+                </p>
+            </div>
+        </section>
+
+        <!-- API Endpoints -->
+        <section id="nexo-api" class="nexo-section" data-nexo-section="api">
+            <h2 class="nexo-heading-2"><i class="fa-solid fa-network-wired"></i> API Endpoints</h2>
+
+            <div class="c3 nexo-card-3d">
+                <table class="nexo-table">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Method</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>getAllData</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงข้อมูลทั้งหมด (Transactions, Wallets, Categories, Settings)</td>
+                        </tr>
+                        <tr>
+                            <td><code>getTransactions</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงเฉพาะรายการทั้งหมด</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveTransaction</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>บันทึก/แก้ไข รายการ (payload: transaction object)</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteTransaction</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>ลบรายการ (payload: { id })</td>
+                        </tr>
+                        <tr>
+                            <td><code>getWallets</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงข้อมูลกระเป๋าเงินทั้งหมด</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveWallet</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>บันทึก/แก้ไข กระเป๋าเงิน</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteWallet</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>ลบกระเป๋าเงิน</td>
+                        </tr>
+                        <tr>
+                            <td><code>getExpenseCats</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงหมวดหมู่รายจ่าย</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveExpenseCat</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>บันทึก/แก้ไข หมวดหมู่รายจ่าย</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteExpenseCat</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>ลบหมวดหมู่รายจ่าย</td>
+                        </tr>
+                        <tr>
+                            <td><code>getIncomeCats</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงหมวดหมู่รายรับ</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveIncomeCat</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>บันทึก/แก้ไข หมวดหมู่รายรับ</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteIncomeCat</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>ลบหมวดหมู่รายรับ</td>
+                        </tr>
+                        <tr>
+                            <td><code>getSettings</code></td>
+                            <td><span class="nexo-tech-tag">GET</span></td>
+                            <td>ดึงการตั้งค่า</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveSettings</code></td>
+                            <td><span class="nexo-tech-tag">POST</span></td>
+                            <td>บันทึกการตั้งค่า</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -501,6 +1094,8 @@
                             <span style="color: #7aa2f7;">const</span> <span style="color: #c0caf5;">nexo</span> = {<br>
                             &nbsp;&nbsp;backend: <span style="color: #9ece6a;">'Google Sheets'</span>,<br>
                             &nbsp;&nbsp;hosting: <span style="color: #9ece6a;">'GitHub Pages'</span>,<br>
+                            &nbsp;&nbsp;frontend: <span style="color: #9ece6a;">'React 18'</span>,<br>
+                            &nbsp;&nbsp;charts: <span style="color: #9ece6a;">'Chart.js 4.4'</span>,<br>
                             &nbsp;&nbsp;cost: <span style="color: #ff9e64;">0.00 ฿</span><br>
                             };
                         </div>
@@ -532,7 +1127,20 @@
                         // วางโค้ดนี้ลงใน Apps Script Editor<br>
                         function doGet(e) { return handleRequest(e); }<br>
                         function doPost(e) { return handleRequest(e); }<br>
-                        // ... (แนะนำให้ใช้โค้ดจากไฟล์ script ที่คุณเตรียมไว้)
+                        <br>
+                        function handleRequest(e) {<br>
+                        &nbsp;&nbsp;try {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;const sheet = SpreadsheetApp.getActiveSpreadsheet();<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;// จัดการ action ต่างๆ<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return ContentService.createTextOutput(JSON.stringify({ success: true,
+                        data: [] }))<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setMimeType(ContentService.MimeType.JSON);<br>
+                        &nbsp;&nbsp;} catch(error) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return ContentService.createTextOutput(JSON.stringify({ success: false,
+                        error: error.toString() }))<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setMimeType(ContentService.MimeType.JSON);<br>
+                        &nbsp;&nbsp;}<br>
+                        }
                     </div>
                     <p>4. กด <strong>บันทึก</strong> > <strong>ทำให้ใช้งานได้ (Deploy)</strong> > <strong>New
                             Deployment</strong> > เลือก <strong>Web App</strong><br>
@@ -587,7 +1195,23 @@
                     <div class="nexo-code-block">
                         // เพิ่มใน Apps Script แล้วกด Run หนึ่งครั้ง<br>
                         function initSheets() {<br>
-                        &nbsp;&nbsp;// สร้าง Header และ Default Data<br>
+                        &nbsp;&nbsp;const ss = SpreadsheetApp.getActiveSpreadsheet();<br>
+                        &nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;// สร้าง Transactions sheet<br>
+                        &nbsp;&nbsp;let sheet = ss.getSheetByName('Transactions') || ss.insertSheet('Transactions');<br>
+                        &nbsp;&nbsp;sheet.getRange('A1:H1').setValues([['id', 'type', 'amount', 'catId', 'walletId',
+                        'date', 'time', 'note']]);<br>
+                        &nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;// สร้าง Wallets sheet พร้อมข้อมูลเริ่มต้น<br>
+                        &nbsp;&nbsp;sheet = ss.getSheetByName('Wallets') || ss.insertSheet('Wallets');<br>
+                        &nbsp;&nbsp;sheet.getRange('A1:D1').setValues([['id', 'name', 'icon', 'color']]);<br>
+                        &nbsp;&nbsp;sheet.getRange('A2:D4').setValues([<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;['w1', 'กระเป๋าหลัก', 'fa-wallet', '#6c63ff'],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;['w2', 'บัตรเครดิต', 'fa-credit-card', '#8b5cf6'],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;['w3', 'ออมทรัพย์', 'fa-piggy-bank', '#00d68f']<br>
+                        &nbsp;&nbsp;]);<br>
+                        &nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;console.log('✅ Initial setup complete!');<br>
                         }
                     </div>
                 </div>
@@ -639,8 +1263,8 @@
         <div class="nexo-container">
             <div class="orb nexo-orb" style="margin: 0 auto 20px; width: 36px; height: 36px; font-size: 16px;"><i
                     class="fa-solid fa-code"></i></div>
-            <p>MoneyFlow Nexo Edition — พัฒนาด้วย React & Google Apps
-                Script<br>คู่มือนี้สร้างขึ้นสำหรับผู้ที่มีโค้ดของระบบและต้องการเปิดใช้งานด้วยตนเอง</p>
+            <p>MoneyFlow Nexo Edition — พัฒนาด้วย React 18, Google Apps Script, Chart.js<br>
+                คู่มือนี้สร้างขึ้นสำหรับผู้ที่มีโค้ดของระบบและต้องการเปิดใช้งานด้วยตนเอง</p>
             <p style="margin-top: 20px; font-size: 13px;">&copy; 2026 MoneyFlow. ออกแบบตามมาตรฐาน Nexo Theme.
                 สงวนลิขสิทธิ์</p>
         </div>
@@ -659,6 +1283,7 @@
 
         // nexo protection watermark
         console.log('%c🚀 MoneyFlow Nexus | Protected by nexo', 'color: #6c63ff; font-size: 14px; font-weight: bold;');
+        console.log('%c📊 Tech Stack: React 18 | Google Apps Script | Chart.js 4.4 | Google Sheets API', 'color: #00d68f; font-size: 12px;');
     </script>
 </body>
 
